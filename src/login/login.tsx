@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import './login.css'
 
 
 
 function Login () {
   return (
-    <div className='login'>
-        <div id='logo'></div>
+    <div className="flex flex-col items-center justify-start w-full h-full">
+        <img 
+            className="flex w-[87.69%] h-[14.28%]" 
+            src="/images/logo.png" 
+        />
         <div id='kakao'></div>
         <div id='naver'></div>
         <div id='google'></div>

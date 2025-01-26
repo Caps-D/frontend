@@ -1,11 +1,9 @@
 // vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';  // 수정된 부분
 
-// 기존 ESM 방식에서 CommonJS 방식으로 변경
-import pkg from 'vite';
-const { createFilter } = pkg;
-
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
 });
