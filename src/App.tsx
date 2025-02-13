@@ -5,7 +5,7 @@ import Login from './login/login'
 
 function App() {
   return (
-    <div className="w-full h-full flex-col flex">
+    <div className="w-full h-full flex-col flex max-w-[500px] bg-white">
     <Router>
         <Routes>
           <Route path="/" element={<Login />}/>
