@@ -1,8 +1,29 @@
 
-import CommonBtn from "../components/commonBtn";
-import BottomNav from "../components/bottomNav";
+import CommonBtn from "../../components/commonBtn";
+import BottomNav from "../../components/bottomNav";
+import { GetMain } from "../../api/main/getMain";
+import { useEffect, useState } from "react";
 
 function Main () {
+
+    const [ mainData, setMainData] = useState<any>([]);
+
+
+    useEffect(() => {
+        const getChatRoomData = async () => {
+            console.log('실행')
+            try {
+                const mainData = await GetMain();
+                console.log(mainData.data);
+                setMainData(mainData.data || []);
+            } catch (error) {
+                console.log("메인 정보를 불러오지 못했습니다.", error);
+                setMainData([]);
+            }
+        };
+        getChatRoomData();
+    },[]);
+
 
     type mainData = {
         level: number;

@@ -1,9 +1,10 @@
 import {  BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
-import Login from './login/login'
-import Main from './main/main'
-import Closet from './closet/closet'
-import Shop from './shop/shop'
+import Login from './page/login/login'
+import Main from './page/main/main'
+import Closet from './page/closet/closet'
+import Shop from './page/shop/shop'
+import Rank from './page/rank/rank'
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/main" element={<Main />}/>
           <Route path="/closet" element={<Closet />}/>
           <Route path="/shop" element={<Shop />}/>
+          <Route path="/rank" element={<Rank />}/>
 
         </Routes>
     </Router>
