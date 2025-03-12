@@ -21,21 +21,20 @@ function Mode () {
         <DefaultBody hasHeader={1}>
             <div className="w-[100%] mt-[20px] flex items-center justify-center text-[24px] font-normal  text-black font-['NeoDunggeunmo']">모드를 선택해주세요.</div>
 
-            <div id="buttonCont" className="mt-[30px] mb-[30px] flex w-[100%] flex-col items-center justify-center ">
-                <button className="w-[266px] h-[143px] bg-[#FF801E] text-[36px] font-normal leading-[36px] text-white font-['NeoDunggeunmo']">
+            <div id="buttonCont" className="flex mt-[30px] w-[100%] flex-col items-center justify-center ">
+                <button className="w-[70.93%] h-[40.61%] bg-[#FF801E] text-[200%] font-normal leading-[36px] text-white font-['NeoDunggeunmo']">
                     <div className="mt-[30px]">일반 모드</div>
-                    <div className="text-[12px] mt-4 ">일일퀘스트를 빠르게 완료해보세요!</div>
+                    <div className="text-[12px] mt-2 ">일일퀘스트를 빠르게 완료해보세요!</div>
                 </button>
 
-                <button className="mt-[50px] w-[266px] h-[143px] bg-[#989C93] text-[36px] font-normal leading-[36px] text-white font-['NeoDunggeunmo']">
+                <button className="mt-[50px] w-[70.93%] h-[40.61%]  bg-[#989C93] text-[200%] font-normal leading-[36px] text-white font-['NeoDunggeunmo']">
                     <div className="mt-[30px]">사용자 모드</div>
-                    <div className="text-[12px] mt-4 ">원하는 운동과 횟수를 지정할 수 있어요!</div>
+                    <div className="text-[12px] mt-2 ">원하는 운동과 횟수를 지정할 수 있어요!</div>
                 </button>
             </div>
-            <div className="fixed bottom-10 w-[90%] center"> 
-
+         
                 <CommonBtn status={1} text="다음" onClick={()=>navigate('/select/exercise')}></CommonBtn>
-            </div>
+       
 
         </DefaultBody>
     </div>
