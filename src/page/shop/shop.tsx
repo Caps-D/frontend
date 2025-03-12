@@ -1,5 +1,4 @@
-import 상점 from '../../assets/Shop.svg?react'
-import Arrow from '../../assets/Arrow.svg?react'
+import Header from '../../components/header'
 import Gold from '../../assets/Gold.svg?react'
 import Woman1 from '../../assets/Woman1.svg?react'
 import PurchaseBtn from '../../assets/PurchaseBtn.svg?react'
@@ -31,21 +30,23 @@ export default function Shop() {
 
     return (
         <div className="flex flex-col w-full h-full items-center justify-start">
-            {/* 상단바 */}
-            <div className="flex flex-row w-full mt-14 gap-14">
-                <Arrow className="ml-6" onClick={handleArrowBtn}/>
-                <상점 className="ml-32"/>
+            <Header>
+                <Header.Title>{`상점`}</Header.Title>
+                <Header.BackButton/>
+            </Header>
+
+            {/* 골드 */}
+            <div className="mt-24 mb-9 ml-72">
+                <Gold/>
             </div>
-
-            <Gold className="mt-0.5 mb-9 ml-72"></Gold>
-
+           
             {/* 캐릭터 */}
             <div className="w-[48.53%] h-[36.2%]">
                 <Woman1 className="w-full h-full"/>
             </div>   
 
             {/* 버튼 */}
-            <div className="flex flex-row w-full h-[5.83%] items-center justify-center mt-10 gap-3.5">
+            <div className="flex flex-row w-full h-[5.83%] items-center justify-center mt-8 gap-3.5">
                 <PurchaseBtn className="w-[29%] h-full pr-5" onClick={handleDressupBtn}/>
                 <CancelBtn className="w-[22.13%] h-full" onClick={handleCancelBtn}/>
             </div>      
