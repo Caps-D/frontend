@@ -4,6 +4,7 @@ import BottomNav from "../../components/bottomNav";
 import { GetMain } from "../../api/main/getMain";
 import { useEffect, useState } from "react";
 import { useNavigate  } from "react-router-dom";
+import DefaultBody from "../../components/defaultBody";
 
 function Main () {
 
@@ -78,6 +79,7 @@ function Main () {
       
   return (
     <div className="flex flex-col items-center justify-start w-full h-full">
+       <DefaultBody hasHeader={0}>
         {/*상단바*/}
         <div id='topCont' className="w-full  h-[10%] flex min-h-[50px] items-center justify-around mt-3">
             <div id='levelBar' className="flex w-[35.2%] h-[66.5%] min-h-[50px]  max-h-[60px]">
@@ -139,20 +141,21 @@ function Main () {
             <div id='target'className="font-['NeoDunggeunmo'] font-normal text-[17px] leading-[13px] mt-[16px]">
                 {dummydata.targetExercise} {dummydata.targetcount}회 X {dummydata.targetSet}세트
             </div>
-            <div id='check' className="font-['NeoDunggeunmo'] font-normal text-[77px] leading-[34px] mt-[16px] tracking-[-9px]" dangerouslySetInnerHTML={{ __html: checkMarks }}
+            <div id='check' className="font-['NeoDunggeunmo'] font-normal text-[70px] leading-[34px] mt-[16px] tracking-[-9px]" dangerouslySetInnerHTML={{ __html: checkMarks }}
          >
             
             </div>
         </div>
 
         {/*캐릭터*/}
-        <div id='character' className="w-[48.53%] h-[36.2%] items-center justify-center flex mb-[30px]">
-            <img src={`/images/여자 기본${dummydata.character.state}.svg`}></img>
+        <div id='character' className="flex w-[100%] h-[33.2%] items-center justify-center flex mb-[13%] mt-[5%]">
+            <img src={`/images/여자 기본${dummydata.character.state}.svg`} className="w-[50%]"></img>
         </div>
         
-        <CommonBtn status={1} text="운동 시작하기"></CommonBtn>
-       <div className="pb-[80px]"></div>
+        <CommonBtn status={1} text="운동 시작하기" onClick={()=>navigate('/select/mode')}></CommonBtn>
         <BottomNav activeIndex={1}></BottomNav>
+        
+        </DefaultBody>
     </div>
   )
 }
