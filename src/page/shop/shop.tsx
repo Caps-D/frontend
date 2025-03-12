@@ -30,6 +30,7 @@ export default function Shop() {
 
     return (
         <div className="flex flex-col w-full h-full items-center justify-start">
+
             <Header>
                 <Header.Title>{`상점`}</Header.Title>
                 <Header.BackButton/>
@@ -46,6 +47,7 @@ export default function Shop() {
             </div>   
 
             {/* 버튼 */}
+
             <div className="flex flex-row w-full h-[5.83%] items-center justify-center mt-8 gap-3.5">
                 <PurchaseBtn className="w-[29%] h-full pr-5" onClick={handleDressupBtn}/>
                 <CancelBtn className="w-[22.13%] h-full" onClick={handleCancelBtn}/>

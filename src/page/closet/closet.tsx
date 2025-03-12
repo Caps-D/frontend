@@ -15,6 +15,7 @@ import './closet.css'
 
 export default function Closet() {
     const navigate = useNavigate();
+
     const [showClothes, setshowClothes] = useState<string | null> (null);
 
     const handleArrowBtn = () => {
@@ -28,6 +29,7 @@ export default function Closet() {
     const handleCancelBtn = () => {
         
     }
+
 
     const handleClothesBtn = (outerId: string) => {
         setshowClothes(prev => (prev === outerId ? null : outerId))
@@ -46,13 +48,16 @@ export default function Closet() {
             </div>   
 
             {/* 버튼 */}
+
             <div className="flex flex-row w-full h-[5.83%] items-center justify-center mt-8 gap-3.5">
+
                 <DressBtn className="w-[29%] h-full pr-5" onClick={handleDressupBtn}/>
                 <CancelBtn className="w-[22.13%] h-full" onClick={handleCancelBtn}/>
             </div>      
 
             {/* 옷장 */}
             <div className="flex flex-col closet w-full h-[29.1%] mt-auto">
+
                 {/* 옷걸이 */}
                 <div className="flex flex-row w-full h-[50%] justify-center gap-8 mt-6">
                     <button className="closet-inner w-[24.53%] h-full" onClick={handleClothesBtn}>
@@ -65,6 +70,7 @@ export default function Closet() {
                         <Outer3 className="w-full h-[85%]"/>
                     </button>
                 </div>            
+
                 <div className="flex flex-row w-full h-[50%] justify-center gap-8 mt-3 mb-6">
                     <button className="closet-inner w-[24.53%] h-full">
                         <Outer4 className="w-full h-[85%]"/>
@@ -77,6 +83,7 @@ export default function Closet() {
                     </button>
                 </div>
             </div>            
+
         </div>   
     )
 }
