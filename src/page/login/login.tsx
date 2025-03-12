@@ -29,12 +29,12 @@ const handleGoogle = () => {
               className="flex w-full h-full"
               src="/images/카카오.svg"></img>
         </button>
-        <button id='naver' className="flex w-[87.4%] h-[6.6%] mb-[2.46%]">
+        <button id='naver' className="flex w-[87.4%] h-[6.6%] mb-[2.46%]" onClick={handleNaver}>
           <img
               className="flex w-full h-full"
               src="/images/네이버.svg"></img>
         </button>
-        <button id='google' className="flex w-[87.4%] h-[6.6%] ">
+        <button id='google' className="flex w-[87.4%] h-[6.6%] " onClick={handleGoogle}>
           <img
               className="flex w-full h-full"
               src="/images/구글.svg"></img>
