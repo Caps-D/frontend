@@ -64,8 +64,8 @@ function Number() {
             세트
           </div>
         </div>
-        <div className="fixed bottom-10 w-[90%] center">       
-            <CommonBtn status={1} text="다음" onClick={() => navigate('/select/exercise')} />
+        <div className="flex w-[100%] mt-36  center">       
+            <CommonBtn status={1} text="다음" onClick={() => navigate('/start')} />
         </div>
       </DefaultBody>
     </div>

@@ -136,7 +136,7 @@ function Main () {
         </div>
 
         {/*목표*/}
-        <div id='targetCont' className="flex flex-col justify-start items-center w-full mt-[45px] mb-[10%]">
+        <div id='targetCont' className="flex flex-col justify-start items-center w-full mt-[45px] mb-[5%]">
             <div id='title' className="font-['NeoDunggeunmo'] font-normal text-[27px] leading-[24px]">오늘의 목표</div>
             <div id='target'className="font-['NeoDunggeunmo'] font-normal text-[17px] leading-[13px] mt-[16px]">
                 {dummydata.targetExercise} {dummydata.targetcount}회 X {dummydata.targetSet}세트
@@ -148,11 +148,12 @@ function Main () {
         </div>
 
         {/*캐릭터*/}
-        <div id='character' className="flex w-[100%] h-[33.2%] items-center justify-center flex mb-[13%] mt-[5%]">
-            <img src={`/images/여자 기본${dummydata.character.state}.svg`} className="w-[50%]"></img>
+        <div className="flex w-[100%] justify-center items-center">
+        <div id='character' className="flex w-[48.53%] h-[33.2%] items-center justify-center flex mb-[5%]">
+            <img src={`/images/여자 기본${dummydata.character.state}.svg`}></img>
         </div>
-        
-        <CommonBtn status={1} text="운동 시작하기" onClick={()=>navigate('/select/mode')}></CommonBtn>
+        </div>
+        <CommonBtn status={1} text="운동 시작하기" onClick={()=>navigate('/select/mode')} hasNav={true}></CommonBtn>
         <BottomNav activeIndex={1}></BottomNav>
         
         </DefaultBody>

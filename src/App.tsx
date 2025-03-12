@@ -8,6 +8,7 @@ import Rank from './page/rank/rank'
 import Number from './page/select/number'
 import Mode from './page/select/mode'
 import Exercise from './page/select/exercise'
+import Start from './page/start/start'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/select/mode" element={<Mode />}/>
           <Route path="/select/number" element={<Number />}/>
           <Route path="/select/exercise" element={<Exercise />}/>
+          <Route path="/start" element={<Start />}/>
 
         </Routes>
     </Router>
