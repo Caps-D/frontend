@@ -32,8 +32,11 @@ function Mode () {
                     <div className="text-[12px] mt-4 ">원하는 운동과 횟수를 지정할 수 있어요!</div>
                 </button>
             </div>
+            <div className="fixed bottom-10 w-[90%] center"> 
 
-        <CommonBtn status={1} text="다음" onClick={()=>navigate('/select/exercise')}></CommonBtn>
+                <CommonBtn status={1} text="다음" onClick={()=>navigate('/select/exercise')}></CommonBtn>
+            </div>
+
         </DefaultBody>
     </div>
   )
