@@ -3,12 +3,14 @@ import CommonBtn from "../../components/commonBtn";
 import { useEffect, useState } from "react";
 import Header from "../../components/header";
 import DefaultBody from "../../components/defaultBody";
+import { useNavigate  } from "react-router-dom";
 
 
 
 function Mode () {
 
-   
+    const navigate = useNavigate();
+
    
   return (
     <div className="flex flex-col items-center justify-start w-full h-full">
@@ -31,7 +33,7 @@ function Mode () {
                 </button>
             </div>
 
-        <CommonBtn status={1} text="다음"></CommonBtn>
+        <CommonBtn status={1} text="다음" onClick={()=>navigate('/select/exercise')}></CommonBtn>
         </DefaultBody>
     </div>
   )
