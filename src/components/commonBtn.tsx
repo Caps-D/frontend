@@ -12,7 +12,7 @@ const CommonBtn: React.FC<CommonBtnProps> = ({ text, status, onClick }) => {
     const cn = status? "bg-[#FF801E] text-white" : "bg-[#989C93] text-white";
 
     return (
-        <button onClick={onClick} className={ "w-[81.6%] h-[50px] rounded-[30px] font-['NeoDunggeunmo'] text-[20px] "+ cn }>
+        <button onClick={onClick} className={ "w-[100%] h-[50px] rounded-[30px] font-['NeoDunggeunmo'] text-[20px] "+ cn }>
             {text}
         </button>
     );
