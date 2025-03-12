@@ -3,11 +3,12 @@ import CommonBtn from "../../components/commonBtn";
 import BottomNav from "../../components/bottomNav";
 import { GetMain } from "../../api/main/getMain";
 import { useEffect, useState } from "react";
+import { useNavigate  } from "react-router-dom";
 
 function Main () {
 
     const [ mainData, setMainData] = useState<any>([]);
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getChatRoomData = async () => {
@@ -121,7 +122,7 @@ function Main () {
             </div>
 
 
-            <button id='rank' className="w-[13.33%] h-[4.18%]min-h-[50px] min-w-[50px] ml-4 mt-[8px]">
+            <button id='rank' className="w-[13.33%] h-[4.18%]min-h-[50px] min-w-[50px] ml-4 mt-[8px]" onClick={()=>navigate('/rank')}>
                 <img src="/images/rankBtn.svg"></img>
             </button>
 
