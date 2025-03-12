@@ -15,7 +15,8 @@ import './closet.css'
 
 export default function Closet() {
     const navigate = useNavigate();
-    const [showClothes, setShowClothes] = useState(false)
+    const [showClothes, setshowClothes] = useState<string | null> (null);
+
     const handleArrowBtn = () => {
         navigate('/shop')
     }
@@ -28,8 +29,8 @@ export default function Closet() {
         
     }
 
-    const handleClothesBtn = () => {
-        
+    const handleClothesBtn = (outerId: string) => {
+        setshowClothes(prev => (prev === outerId ? null : outerId))
     }
 
     return (
