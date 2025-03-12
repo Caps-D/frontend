@@ -1,5 +1,5 @@
-import 옷장 from '../../assets/Closet.svg?react'
-import Arrow from '../../assets/Arrow.svg?react'
+import Header from '../../components/header'
+import DefaultBody from '../../components/defaultBody'
 import Woman1 from '../../assets/Woman1.svg?react'
 import DressBtn from '../../assets/DressBtn.svg?react'
 import CancelBtn from '../../assets/CancelBtn.svg?react'
@@ -15,7 +15,9 @@ import './closet.css'
 
 export default function Closet() {
     const navigate = useNavigate();
-    const [showClothes, setShowClothes] = useState(false)
+
+    const [showClothes, setshowClothes] = useState<string | null> (null);
+
     const handleArrowBtn = () => {
         navigate('/shop')
     }
@@ -28,31 +30,34 @@ export default function Closet() {
         
     }
 
-    const handleClothesBtn = () => {
-        
+
+    const handleClothesBtn = (outerId: string) => {
+        setshowClothes(prev => (prev === outerId ? null : outerId))
     }
 
     return (
         <div className="flex flex-col w-full h-full items-center justify-start">
-            {/* 상단바 */}
-            <div className="flex flex-row w-full mt-14 mb-20 gap-14">
-                <Arrow className="ml-6" onClick={handleArrowBtn}/>
-                <옷장 className="ml-32"/>
-            </div>
+            <Header>
+                <Header.Title>{`옷장`}</Header.Title>
+                <Header.BackButton/>
+            </Header>
 
             {/* 캐릭터 */}
-            <div className="w-[48.53%] h-[36.2%]">
+            <div className="mt-44 w-[48.53%] h-[36.2%]">
                 <Woman1 className="w-full h-full"/>
             </div>   
 
             {/* 버튼 */}
-            <div className="flex flex-row w-full h-[5.83%] items-center justify-center mt-10 gap-3.5">
+
+            <div className="flex flex-row w-full h-[5.83%] items-center justify-center mt-8 gap-3.5">
+
                 <DressBtn className="w-[29%] h-full pr-5" onClick={handleDressupBtn}/>
                 <CancelBtn className="w-[22.13%] h-full" onClick={handleCancelBtn}/>
             </div>      
 
             {/* 옷장 */}
-            <div className="flex flex-col closet w-full h-[29.1%] mt-auto ">
+            <div className="flex flex-col closet w-full h-[29.1%] mt-auto">
+
                 {/* 옷걸이 */}
                 <div className="flex flex-row w-full h-[50%] justify-center gap-8 mt-6">
                     <button className="closet-inner w-[24.53%] h-full" onClick={handleClothesBtn}>
@@ -64,7 +69,8 @@ export default function Closet() {
                     <button className="closet-inner w-[24.53%] h-full">
                         <Outer3 className="w-full h-[85%]"/>
                     </button>
-                </div>
+                </div>            
+
                 <div className="flex flex-row w-full h-[50%] justify-center gap-8 mt-3 mb-6">
                     <button className="closet-inner w-[24.53%] h-full">
                         <Outer4 className="w-full h-[85%]"/>
@@ -76,8 +82,8 @@ export default function Closet() {
                         <Outer6 className="w-full h-[85%]"/>
                     </button>
                 </div>
+            </div>            
 
-            </div>
         </div>   
     )
 }

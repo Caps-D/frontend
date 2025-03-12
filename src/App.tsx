@@ -26,7 +26,6 @@ function App() {
           <Route path="/select/number" element={<Number />}/>
           <Route path="/select/exercise" element={<Exercise />}/>
           <Route path="/start" element={<Start />}/>
-
         </Routes>
     </Router>
     </div>
