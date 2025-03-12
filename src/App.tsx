@@ -5,7 +5,9 @@ import Main from './page/main/main'
 import Closet from './page/closet/closet'
 import Shop from './page/shop/shop'
 import Rank from './page/rank/rank'
-
+import Number from './page/select/number'
+import Mode from './page/select/mode'
+import Exercise from './page/select/exercise'
 
 function App() {
   return (
@@ -18,6 +20,9 @@ function App() {
           <Route path="/closet" element={<Closet />}/>
           <Route path="/shop" element={<Shop />}/>
           <Route path="/rank" element={<Rank />}/>
+          <Route path="/select/mode" element={<Mode />}/>
+          <Route path="/select/number" element={<Number />}/>
+          <Route path="/select/exercise" element={<Exercise />}/>
 
         </Routes>
     </Router>
