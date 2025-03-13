@@ -56,7 +56,7 @@ export default function Closet() {
             </div>      
 
             {/* 옷장 */}
-            <div className="flex flex-col closet w-full h-[29.1%] mt-auto">
+            <div className="flex flex-col closet w-fulㄴl h-[29.1%] mt-auto">
 
                 {/* 옷걸이 */}
                 <div className="flex flex-row w-full h-[50%] justify-center gap-8 mt-6">
