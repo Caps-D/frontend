@@ -148,9 +148,9 @@ function Main () {
         </div>
 
         {/*캐릭터*/}
-        <div className="flex w-[100%] justify-center items-center">
+        <div className="flex w-[100%] justify-center items-center  ">
         <div id='character' className="flex w-[48.53%] h-[33.2%] items-center justify-center flex mb-[5%]">
-            <img src={`/images/여자 기본${dummydata.character.state}.svg`}></img>
+            <img src={`/images/여자 기본${dummydata.character.state}.svg`} className="w-[100%] flex items-center justify-center"></img>
         </div>
         </div>
         <CommonBtn status={1} text="운동 시작하기" onClick={()=>navigate('/select/mode')} hasNav={true}></CommonBtn>

@@ -40,7 +40,7 @@ function Exercise() {
             </button>
 
             <button
-              className={`flex items-center flex-col w-[144px] h-[147px] ${activeButton === '팔굽혀펴기' ? 'bg-[#FF801E] text-white' : 'bg-[#D9D9D9] text-white'} text-[36px] font-normal leading-[36px] font-['NeoDunggeunmo']`}
+              className={`flex items-center flex-col w-[144px] h-[147px] ${activeButton === '팔굽혀펴기' ? 'bg-[#FF801E] text-white' : 'bg-[#D9D9D9] text-[#FF801E]'} text-[36px] font-normal leading-[36px] font-['NeoDunggeunmo']`}
               onClick={() => handleButtonClick('팔굽혀펴기')}
             >
               <img
@@ -53,7 +53,7 @@ function Exercise() {
 
           <div className="flex flex-row mt-[10px]">
             <button
-              className={`flex items-center mr-[10px] flex-col w-[144px] h-[147px] ${activeButton === '스쿼트' ? 'bg-[#FF801E] text-white' : 'bg-[#D9D9D9] text-white'} text-[36px] font-normal leading-[36px] font-['NeoDunggeunmo']`}
+              className={`flex items-center mr-[10px] flex-col w-[144px] h-[147px] ${activeButton === '스쿼트' ? 'bg-[#FF801E] text-white' : 'bg-[#D9D9D9] text-[#FF801E]'} text-[36px] font-normal leading-[36px] font-['NeoDunggeunmo']`}
               onClick={() => handleButtonClick('스쿼트')}
             >
               <img
