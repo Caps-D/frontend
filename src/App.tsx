@@ -9,6 +9,8 @@ import Number from './page/select/number'
 import Mode from './page/select/mode'
 import Exercise from './page/select/exercise'
 import Start from './page/start/start'
+import Friend from './page/friend/friend'
+import NewFriend from './page/newfriend/newfriend'
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route path="/select/number" element={<Number />}/>
           <Route path="/select/exercise" element={<Exercise />}/>
           <Route path="/start" element={<Start />}/>
+          <Route path="/friend" element={<Friend />}/>
+          <Route path="/friend/new" element={<NewFriend />}/>
         </Routes>
     </Router>
     </div>
