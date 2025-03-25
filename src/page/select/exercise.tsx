@@ -3,6 +3,7 @@ import { useState } from "react";
 import Header from "../../components/header";
 import DefaultBody from "../../components/defaultBody";
 import { useNavigate } from "react-router-dom";
+import { useMode } from "../../context/ExerciseContext"; // Context Hook import
 
 function Exercise() {
   const navigate = useNavigate();
@@ -10,9 +11,32 @@ function Exercise() {
   // State to track active buttons
   const [activeButton, setActiveButton] = useState<string | null>(null);
 
+  // Context에서 상태와 setState 가져오기
+  const { state, setState } = useMode();
+
   // Function to handle button click, explicitly typing 'button' as a string
   const handleButtonClick = (button: string) => {
     setActiveButton(button);
+    // 선택된 운동을 context에 저장
+    setState((prevState) => ({
+      ...prevState,
+      exerciseType: button, // exerciseType 업데이트
+    }));
+    console.log('운동 업데이트:', button);
+  };
+
+  // '다음' 버튼 클릭 시 동작
+  const handleNextClick = () => {
+    if (!activeButton) {
+      alert("운동을 선택해주세요.");
+    } else {
+      // mode에 따라 navigate 경로 다르게 설정
+      if (state.mode === '사용자모드') {
+        navigate('/select/number');
+      } else if (state.mode === '일반모드') {
+        navigate('/start');
+      }
+    }
   };
 
   return (
@@ -26,7 +50,7 @@ function Exercise() {
           운동을 선택해주세요.
         </div>
 
-        <div id="buttonCont" className="mt-[30px] mb-[30px] flex w-[100%] flex-col items-center justify-center ">
+        <div id="buttonCont" className="mt-[20%] mb-[30px] h-[50%] flex w-[100%] flex-col items-center justify-center ">
           <div className="flex flex-row">
             <button
               className={`flex items-center mr-[10px] flex-col w-[144px] h-[147px] ${activeButton === '윗몸일으키기' ? 'bg-[#FF801E] text-white' : 'bg-[#D9D9D9] text-[#FF801E]'} text-[36px] font-normal leading-[36px] font-['NeoDunggeunmo']`}
@@ -40,7 +64,7 @@ function Exercise() {
             </button>
 
             <button
-              className={`flex items-center flex-col w-[144px] h-[147px] ${activeButton === '팔굽혀펴기' ? 'bg-[#FF801E] text-white' : 'bg-[#D9D9D9] text-white'} text-[36px] font-normal leading-[36px] font-['NeoDunggeunmo']`}
+              className={`flex items-center flex-col w-[144px] h-[147px] ${activeButton === '팔굽혀펴기' ? 'bg-[#FF801E] text-white' : 'bg-[#D9D9D9] text-[#FF801E]'} text-[36px] font-normal leading-[36px] font-['NeoDunggeunmo']`}
               onClick={() => handleButtonClick('팔굽혀펴기')}
             >
               <img
@@ -53,7 +77,7 @@ function Exercise() {
 
           <div className="flex flex-row mt-[10px]">
             <button
-              className={`flex items-center mr-[10px] flex-col w-[144px] h-[147px] ${activeButton === '스쿼트' ? 'bg-[#FF801E] text-white' : 'bg-[#D9D9D9] text-white'} text-[36px] font-normal leading-[36px] font-['NeoDunggeunmo']`}
+              className={`flex items-center mr-[10px] flex-col w-[144px] h-[147px] ${activeButton === '스쿼트' ? 'bg-[#FF801E] text-white' : 'bg-[#D9D9D9] text-[#FF801E]'} text-[36px] font-normal leading-[36px] font-['NeoDunggeunmo']`}
               onClick={() => handleButtonClick('스쿼트')}
             >
               <img
@@ -69,10 +93,9 @@ function Exercise() {
             </button>
           </div>
         </div>
-        <div className="flex w-[100%] mt-19 center"> 
-        <CommonBtn status={1} text="다음" onClick={() => navigate('/select/number')} />
+        <div className="flex w-[100%] mt-19 center">
+          <CommonBtn status={1} text="다음" onClick={handleNextClick} />
         </div>
-
       </DefaultBody>
     </div>
   );
