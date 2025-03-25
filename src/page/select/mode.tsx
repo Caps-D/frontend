@@ -3,16 +3,36 @@ import { useState } from "react";
 import Header from "../../components/header";
 import DefaultBody from "../../components/defaultBody";
 import { useNavigate } from "react-router-dom";
+import { useMode } from "../../context/ExerciseContext"; // Context Hook import
 
 function Mode() {
   const navigate = useNavigate();
   
   // 선택된 모드를 관리할 상태 추가
   const [selectedMode, setSelectedMode] = useState<string>(""); // "normal" 또는 "user"
+  
+  // Context에서 상태와 setState 가져오기
+  const { state, setState } = useMode();
 
   // 모드 선택 시 상태 업데이트 함수
   const handleModeSelect = (mode: string) => {
     setSelectedMode(mode);
+    // 선택된 모드를 context에 저장
+    setState((prevState) => ({
+      ...prevState,
+      mode: mode === "normal" ? "일반모드" : "사용자모드",
+    }));
+    console.log("업데이트:",mode);
+    console.log(state);
+  };
+
+  // '다음' 버튼 클릭 시 동작
+  const handleNextClick = () => {
+    if (!selectedMode) {
+      alert("모드를 선택해주세요.");
+    } else {
+      navigate('/select/exercise');
+    }
   };
 
   return (
@@ -44,7 +64,7 @@ function Mode() {
           </button>
         </div>
 
-        <CommonBtn status={1} text="다음" onClick={() => navigate('/select/exercise')} />
+        <CommonBtn status={1} text="다음" onClick={handleNextClick} />
       </DefaultBody>
     </div>
   );

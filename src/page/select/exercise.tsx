@@ -3,6 +3,7 @@ import { useState } from "react";
 import Header from "../../components/header";
 import DefaultBody from "../../components/defaultBody";
 import { useNavigate } from "react-router-dom";
+import { useMode } from "../../context/ExerciseContext"; // Context Hook import
 
 function Exercise() {
   const navigate = useNavigate();
@@ -10,9 +11,32 @@ function Exercise() {
   // State to track active buttons
   const [activeButton, setActiveButton] = useState<string | null>(null);
 
+  // Context에서 상태와 setState 가져오기
+  const { state, setState } = useMode();
+
   // Function to handle button click, explicitly typing 'button' as a string
   const handleButtonClick = (button: string) => {
     setActiveButton(button);
+    // 선택된 운동을 context에 저장
+    setState((prevState) => ({
+      ...prevState,
+      exerciseType: button, // exerciseType 업데이트
+    }));
+    console.log('운동 업데이트:', button);
+  };
+
+  // '다음' 버튼 클릭 시 동작
+  const handleNextClick = () => {
+    if (!activeButton) {
+      alert("운동을 선택해주세요.");
+    } else {
+      // mode에 따라 navigate 경로 다르게 설정
+      if (state.mode === '사용자모드') {
+        navigate('/select/number');
+      } else if (state.mode === '일반모드') {
+        navigate('/start');
+      }
+    }
   };
 
   return (
@@ -69,10 +93,9 @@ function Exercise() {
             </button>
           </div>
         </div>
-        <div className="flex w-[100%] mt-19 center"> 
-        <CommonBtn status={1} text="다음" onClick={() => navigate('/select/number')} />
+        <div className="flex w-[100%] mt-19 center">
+          <CommonBtn status={1} text="다음" onClick={handleNextClick} />
         </div>
-
       </DefaultBody>
     </div>
   );
