@@ -26,7 +26,7 @@ function Exercise() {
           운동을 선택해주세요.
         </div>
 
-        <div id="buttonCont" className="mt-[30px] mb-[30px] flex w-[100%] flex-col items-center justify-center ">
+        <div id="buttonCont" className="mt-[20%] mb-[30px] h-[50%] flex w-[100%] flex-col items-center justify-center ">
           <div className="flex flex-row">
             <button
               className={`flex items-center mr-[10px] flex-col w-[144px] h-[147px] ${activeButton === '윗몸일으키기' ? 'bg-[#FF801E] text-white' : 'bg-[#D9D9D9] text-[#FF801E]'} text-[36px] font-normal leading-[36px] font-['NeoDunggeunmo']`}

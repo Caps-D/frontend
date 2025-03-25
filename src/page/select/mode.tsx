@@ -26,9 +26,9 @@ function Mode() {
           모드를 선택해주세요.
         </div>
 
-        <div id="buttonCont" className="flex mt-[30px] w-[100%] flex-col items-center justify-center">
+        <div id="buttonCont" className="flex mt-[20%] w-[100%] h-[50%] flex-col items-center justify-center">
           <button
-            className={`w-[70.93%] h-[40.61%] text-[200%] font-normal leading-[36px] text-white font-['NeoDunggeunmo'] ${selectedMode === "normal" ? "bg-[#FF801E]" : "bg-[#989C93]"}`}
+            className={`w-[70.93%] h-[50.61%] text-[200%] font-normal leading-[36px] text-white font-['NeoDunggeunmo'] ${selectedMode === "normal" ? "bg-[#FF801E]" : "bg-[#989C93]"}`}
             onClick={() => handleModeSelect("normal")}
           >
             <div className="mt-[30px]">일반 모드</div>
@@ -36,7 +36,7 @@ function Mode() {
           </button>
 
           <button
-            className={`mt-[50px] w-[70.93%] h-[40.61%] text-[200%] font-normal leading-[36px] text-white font-['NeoDunggeunmo'] ${selectedMode === "user" ? "bg-[#FF801E]" : "bg-[#989C93]"}`}
+            className={`mt-[50px] w-[70.93%] h-[50.61%] text-[200%] font-normal leading-[36px] text-white font-['NeoDunggeunmo'] ${selectedMode === "user" ? "bg-[#FF801E]" : "bg-[#989C93]"}`}
             onClick={() => handleModeSelect("user")}
           >
             <div className="mt-[30px]">사용자 모드</div>

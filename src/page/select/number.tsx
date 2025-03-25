@@ -29,7 +29,7 @@ function Number() {
           횟수를 선택해주세요.
         </div>
 
-        <div id="mainCont" className="mt-[20%] mb-[30px] flex w-[100%] flex-col items-center justify-center font-['NeoDunggeunmo'] text-black">
+        <div id="mainCont" className="mt-[20%] mb-[30px] h-[50%] flex w-[100%] flex-col items-center justify-center font-['NeoDunggeunmo'] text-black">
           <div id="number" className="w-[228px] text-[32px] flex flex-row items-center">
             <button
               className="w-[40px] h-[40px] text-[64px] flex items-center"
