@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import DefaultBody from '../../components/defaultBody';
 import Header from '../../components/header';
 import { useMode } from "../../context/ExerciseContext"; // Context Hook import
+import { useNavigate } from 'react-router-dom'; // useNavigate import
 
 const Start = () => {
   const [isStreaming, setIsStreaming] = useState(true);
@@ -15,6 +16,7 @@ const Start = () => {
   const websocketRef = useRef<WebSocket | null>(null);
   const isWebSocketConnected = useRef<boolean>(false);  // 웹소켓 연결 상태 추적
   const { state, setState } = useMode();
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
     // 페이지가 로드되면 자동으로 운동 시작
@@ -33,7 +35,13 @@ const Start = () => {
       clearTimeout(timer); // 컴포넌트가 unmount될 때 타이머 클리어
     };
   }, []);
-  
+
+  // `squatCount`가 목표 횟수에 도달하면 자동으로 /result로 네비게이션
+  useEffect(() => {
+    if (squatCount >= state.exerciseCount * state.exerciseSet) {
+      navigate('/result'); // 목표를 달성하면 /result로 이동
+    }
+  }, [squatCount, state.exerciseCount, state.exerciseSet, navigate]);
 
   const startWebcam = async () => {
     try {
