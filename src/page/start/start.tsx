@@ -1,139 +1,152 @@
-import CommonBtn from "../../components/commonBtn";
-import { useEffect, useState, useRef } from "react";
-import Header from "../../components/header";
-import DefaultBody from "../../components/defaultBody";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from 'react';
+import DefaultBody from '../../components/defaultBody';
+import Header from '../../components/header';
+import { useMode } from "../../context/ExerciseContext"; // Context Hook import
 
-function Start() {
-  const navigate = useNavigate();
+const Start = () => {
+  const [isStreaming, setIsStreaming] = useState(true);
 
-  // 웹캠 비디오 참조
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const processedImageRef = useRef<HTMLImageElement | null>(null);
-  const overlayWarningRef = useRef<HTMLDivElement | null>(null);
-  const squatCounterRef = useRef<HTMLDivElement | null>(null);
-
-  const [websocket, setWebSocket] = useState<WebSocket | null>(null);
   const [squatCount, setSquatCount] = useState(0);
-  const [connectionAttempts, setConnectionAttempts] = useState(0);  // 연결 시도 횟수 추적
+  const [warningMessage, setWarningMessage] = useState('');
+  const [status, setStatus] = useState<string>('failure');
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const processedImageRef = useRef<HTMLImageElement>(null);
+  const overlayWarningRef = useRef<HTMLDivElement>(null);
+  const websocketRef = useRef<WebSocket | null>(null);
+  const isWebSocketConnected = useRef<boolean>(false);  // 웹소켓 연결 상태 추적
+  const { state, setState } = useMode();
 
-  // 웹캠 스트림 가져오기
   useEffect(() => {
-    const getWebcamStream = async () => {
-      try {
-        console.log("🔍 웹캠 요청 중...");
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-        console.log("웹캠 활성화 완료");
-      } catch (err) {
-        console.error("웹캠 오류:", err);
-        alert("웹캠을 사용할 수 없습니다. 권한을 확인하세요.");
-      }
-    };
-
-    getWebcamStream();
-
-    // 컴포넌트 언마운트 시 웹캠 스트림을 종료
+    // 페이지가 로드되면 자동으로 운동 시작
+    const timer = setTimeout(() => {
+      startWebcam();
+      connectWebSocket(); // WebSocket 연결
+      setIsStreaming(true); // 스트리밍 시작
+    }, 1000); // 1초 후에 실행
+  
     return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject as MediaStream;
-        const tracks = stream.getTracks();
-        tracks.forEach((track) => track.stop());
-      }
+      // 페이지를 떠날 때 운동 종료 처리
+      setIsStreaming(false);
+      websocketRef.current?.close();
+      isWebSocketConnected.current = false; // WebSocket 연결 상태 초기화
+  
+      clearTimeout(timer); // 컴포넌트가 unmount될 때 타이머 클리어
     };
   }, []);
+  
 
-  // WebSocket 연결 및 메시지 처리
-  useEffect(() => {
-    const connectWebSocket = () => {
-      // 연결 시도 횟수가 3번을 초과하면 연결 시도하지 않음
-      if (connectionAttempts >= 3) {
-        console.log("WebSocket 연결 시도 제한에 도달했습니다. 더 이상 연결을 시도하지 않습니다.");
+  const startWebcam = async () => {
+    try {
+      console.log('🔍 웹캠 요청 중...');
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      console.log('웹캠 활성화 완료');
+    } catch (error) {
+      console.error('웹캠 오류:', error);
+      alert('웹캠을 사용할 수 없습니다. 권한을 확인하세요.');
+    }
+  };
+
+  const connectWebSocket = () => {
+    if (isWebSocketConnected.current) {
+      console.log('이미 웹소켓 연결이 되어 있습니다. 재연결하지 않습니다.');
+      return; // 이미 연결된 경우 연결 시도하지 않음
+    }
+
+    console.log('WebSocket 연결 시도...');
+    const websocket = new WebSocket('ws://35.216.59.23:5001/ws');
+    websocket.binaryType = 'arraybuffer';
+
+    websocket.onopen = () => {
+      console.log('WebSocket 연결 성공');
+      isWebSocketConnected.current = true;  // 연결 성공 시 상태 업데이트
+      sendFrames(websocket);
+    };
+
+    websocket.onmessage = (event) => {
+      if (typeof event.data === 'string') {
+        try {
+          const response = JSON.parse(event.data);
+          console.log(response);
+          if (overlayWarningRef.current) {
+            overlayWarningRef.current.textContent = response.message;
+            overlayWarningRef.current.style.display = response.message ? 'block' : 'none';
+          }
+
+          // Update squat count
+          if (response.squat_count !== undefined) {
+            setSquatCount(response.squat_count);
+            setStatus(response.status);
+          }
+        } catch (error) {
+          console.error('JSON 파싱 오류:', error);
+        }
+      } else {
+        const blob = new Blob([event.data], { type: 'image/jpeg' });
+        const url = URL.createObjectURL(blob);
+        if (processedImageRef.current) {
+          processedImageRef.current.src = url;
+        }
+      }
+    };
+
+    websocket.onerror = (error) => {
+      console.error('WebSocket 오류:', error);
+      alert('AI 서버 연결에 실패했습니다.');
+    };
+
+    websocket.onclose = () => {
+      console.log('WebSocket 연결 종료');
+      isWebSocketConnected.current = false;  // 연결 종료 시 상태 업데이트
+      if (isStreaming) {
+        setTimeout(connectWebSocket, 3000); // 재연결 시도
+      }
+    };
+
+    websocketRef.current = websocket;
+  };
+
+  const sendFrames = (websocket: WebSocket) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const captureFrame = () => {
+      if (!isStreaming) {
+        console.log('Streaming is stopped. Exiting captureFrame.');
         return;
       }
 
-      const ws = new WebSocket("ws://35.216.59.23:5001/ws");
-      ws.binaryType = "arraybuffer";
+      if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+        console.log('WebSocket is not open. Waiting for connection...');
+        return;
+      }
 
-      ws.onopen = () => {
-        console.log("WebSocket 연결 성공");
-        sendFrames(ws);
-      };
+      if (videoRef.current) {
+        canvas.width = videoRef.current.videoWidth || 640;
+        canvas.height = videoRef.current.videoHeight || 480;
+        ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
-      ws.onmessage = (event) => {
-        if (typeof event.data === "string") {
-          // JSON 응답 처리 (경고 메시지 + 스쿼트 카운트)
-          try {
-            const response = JSON.parse(event.data);
-
-            // 경고 메시지 처리
-            if (overlayWarningRef.current) {
-              overlayWarningRef.current.textContent = response.message;
-              overlayWarningRef.current.style.display = response.message ? "block" : "none";
-            }
-
-            // 스쿼트 카운트 업데이트
-            if (response.squat_count !== undefined) {
-              setSquatCount(response.squat_count);
-              if (squatCounterRef.current) {
-                squatCounterRef.current.textContent = `스쿼트 횟수: ${response.squat_count}`;
-              }
-            }
-          } catch (err) {
-            console.error("WebSocket 메시지 처리 오류:", err);
+        // Debugging log before sending the frame
+        console.log('Capturing frame...');
+        
+        canvas.toBlob((blob) => {
+          if (blob) {
+            console.log('Sending frame...');
+            websocket.send(blob);
+          } else {
+            console.log('Blob creation failed');
           }
-        }
-      };
+        }, 'image/jpeg');
+      } else {
+        console.log('No video element found');
+      }
 
-      ws.onerror = (error) => {
-        console.error("WebSocket 오류:", error);
-        setConnectionAttempts((prevAttempts) => prevAttempts + 1);  // 오류 발생 시 시도 횟수 증가
-      };
-
-      ws.onclose = () => {
-        console.log("WebSocket 연결 종료");
-        // 연결 실패 후 시도 횟수 증가
-        setConnectionAttempts((prevAttempts) => prevAttempts + 1);
-      };
-
-      setWebSocket(ws);
+      setTimeout(captureFrame, 33); // Capture next frame after 33ms
     };
 
-    connectWebSocket();
-
-    // 컴포넌트 언마운트 시 WebSocket 연결 종료
-    return () => {
-      if (websocket) {
-        websocket.close();
-      }
-    };
-  }, [websocket, connectionAttempts]); // connectionAttempts를 의존성으로 추가
-
-  // 비디오 프레임 전송 함수
-  const sendFrames = (ws: WebSocket) => {
-    const sendImageData = () => {
-      if (videoRef.current && ws.readyState === WebSocket.OPEN) {
-        const canvas = document.createElement("canvas");
-        canvas.width = videoRef.current.videoWidth;
-        canvas.height = videoRef.current.videoHeight;
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-          canvas.toBlob((blob) => {
-            if (blob) {
-              ws.send(blob);
-            }
-          });
-        }
-      }
-      if (websocket?.readyState === WebSocket.OPEN) {
-        requestAnimationFrame(sendImageData);
-      }
-    };
-
-    sendImageData();
+    captureFrame(); // Start capturing frames
   };
 
   return (
@@ -143,48 +156,33 @@ function Start() {
         <Header.BackButton />
       </Header>
       <DefaultBody hasHeader={1}>
-        {/* 운동 진행 상태 표시 */}
         <div className="flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[48px] leading-[48px] text-[#000000]">
-          {squatCount} / 30
-        </div>
-        <div className="mt-[15px] flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[48px] leading-[48px] text-[#338C00]">
-          good!
+          {squatCount} / {state.exerciseCount * state.exerciseSet}
         </div>
 
-        {/* 웹캠 비디오 화면 */}
-        <div className="flex justify-center items-center mt-[20px] relative">
-          <video
-            ref={videoRef}
-            autoPlay
-            width="100%"
-            height="auto"
-            style={{ transform: "scaleX(-1)" }}
-          />
+        <div className="mt-[15px] flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[48px] leading-[48px] text-[#338C00] mb-[30px]">
+          {status}
+        </div>
 
-          {/* AI 분석된 이미지 표시 */}
+        <div className="relative inline-block">
+          {/* 원본 웹캠 영상 */}
+          <video ref={videoRef} className="w-[640px] h-[480px]  mb-2" autoPlay />
+          
+          {/* AI 분석된 영상 표시 */}
           <img
             ref={processedImageRef}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "auto",
-            }}
+            className="absolute top-0 left-0 w-[640px] h-[480px]"
           />
 
           {/* 경고 메시지 오버레이 */}
           <div
             ref={overlayWarningRef}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl font-bold text-red-600 bg-white bg-opacity-70 p-2 rounded-md"
-            style={{ display: "none" }}
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl font-bold text-red-600 bg-white bg-opacity-80 px-4 py-2 rounded-md hidden"
           ></div>
         </div>
-
-       
       </DefaultBody>
     </div>
   );
-}
+};
 
 export default Start;

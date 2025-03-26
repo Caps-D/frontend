@@ -11,6 +11,7 @@ import Exercise from './page/select/exercise'
 import Start from './page/start/start'
 import Friend from './page/friend/friend'
 import NewFriend from './page/newfriend/newfriend'
+import Signup from './page/login/signup'
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
           <Route path="/start" element={<Start />}/>
           <Route path="/friend" element={<Friend />}/>
           <Route path="/friend/new" element={<NewFriend />}/>
+          <Route path="/signup" element={<Signup />}/>
+
         </Routes>
     </Router>
     </div>
