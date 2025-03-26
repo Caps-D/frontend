@@ -59,7 +59,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeIndex = 0 }) => {
           </Link>
         </li>
         <li className="flex-1 text-center">
-          <Link to="/friends" className="flex justify-center items-center h-full mt-4">
+          <Link to="/friend" className="flex justify-center items-center h-full mt-4">
             <img
               src={activeIndex === 3 ? ActivefriendsIconPath : friendsIconPath}
               alt="User"

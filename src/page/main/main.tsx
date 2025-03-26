@@ -129,7 +129,7 @@ function Main () {
             </button>
 
 
-            <button id='shop'  className="w-[13.33%] h-[4.18%] ml-[10px] min-h-[50px] min-w-[50px] mt-[8px]">
+            <button id='shop'  className="w-[13.33%] h-[4.18%] ml-[10px] min-h-[50px] min-w-[50px] mt-[8px] " onClick={()=>navigate('/shop')}>
                 <img src="/images/shopBtn.svg"></img>
             </button>
 
