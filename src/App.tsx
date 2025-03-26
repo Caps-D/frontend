@@ -12,6 +12,7 @@ import Start from './page/start/start'
 import Friend from './page/friend/friend'
 import NewFriend from './page/newfriend/newfriend'
 import Signup from './page/login/signup'
+import Quest from './page/quest/quest'
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
           <Route path="/friend" element={<Friend />}/>
           <Route path="/friend/new" element={<NewFriend />}/>
           <Route path="/signup" element={<Signup />}/>
-
+          <Route path="/quest" element={<Quest />}/>
         </Routes>
     </Router>
     </div>

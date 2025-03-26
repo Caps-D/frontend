@@ -12,15 +12,9 @@ import Bottom6 from '../../assets/Bottom6.svg?react'
 import Coin from '../../assets/Coin.svg?react'
 
 import { useState, useEffect } from 'react';
-import { useNavigate} from 'react-router-dom';
 import './shop.css'
 
 export default function Shop() {
-    const navigate = useNavigate();
-
-    const handleArrowBtn = () => {
-        navigate('/closet')
-    }
 
     const handleDressupBtn = () => {
         
