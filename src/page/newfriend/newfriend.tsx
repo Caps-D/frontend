@@ -26,15 +26,15 @@ export default function NewFriend(){
             <DefaultBody hasHeader={1}>
                 <div className="flex flex-col items-center">
                     {/* 검색창 */}
-                    <div className="flex flex-row w-[70%] h-[40%]">
+                    <div className="flex flex-row w-[70%] h-[50%] relative">
                         <input 
                             type="text"
                             placeholder="친구 닉네임을 검색하세요."
-                            className="font-['NeoDunggeunmo'] w-full h-full bg-[#D9D9D9] border border-[#000000] rounded-[30px] p-2.5 pl-10"
+                            className="font-['NeoDunggeunmo'] text-lg w-full h-full bg-[#D9D9D9] border border-[#000000] rounded-[30px] p-3 pl-10"
                         /> 
-                        <button className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                            <Search className="w-8 h-8"/>
-                        </button>
+                       
+                            <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 w-8 h-8"/>
+                    
                     </div>
 
                     {/* 친구추가 */}
