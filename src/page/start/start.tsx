@@ -8,6 +8,7 @@ const Start = () => {
   const [isStreaming, setIsStreaming] = useState(true);
 
   const [squatCount, setSquatCount] = useState(0);
+  const [targetCheck, setTargetCheck] = useState(0);  // targetCheck 상태 추가
   const [warningMessage, setWarningMessage] = useState('');
   const [status, setStatus] = useState<string>('failure');
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -38,10 +39,18 @@ const Start = () => {
 
   // `squatCount`가 목표 횟수에 도달하면 자동으로 /result로 네비게이션
   useEffect(() => {
-    if (squatCount >= state.exerciseCount * state.exerciseSet) {
+    if (squatCount === state.exerciseCount) {
+      setSquatCount(0);  // squatCount 리셋
+      setTargetCheck((prevTargetCheck) => prevTargetCheck + 1);  // targetCheck 1 증가
+    }
+  }, [squatCount, state.exerciseCount]);
+
+  useEffect(() => {
+    if (squatCount * targetCheck >= state.exerciseCount * state.exerciseSet) {
       navigate('/result'); // 목표를 달성하면 /result로 이동
     }
-  }, [squatCount, state.exerciseCount, state.exerciseSet, navigate]);
+  }, [squatCount, state.exerciseCount, state.exerciseSet,targetCheck, navigate]);
+
 
   const startWebcam = async () => {
     try {
@@ -78,15 +87,18 @@ const Start = () => {
         try {
           const response = JSON.parse(event.data);
           console.log(response);
+
           if (overlayWarningRef.current) {
             overlayWarningRef.current.textContent = response.message;
             overlayWarningRef.current.style.display = response.message ? 'block' : 'none';
           }
 
-          // Update squat count
-          if (response.squat_count !== undefined) {
-            setSquatCount(response.squat_count);
-            setStatus(response.status);
+          // `response.status`가 'success'일 때 squatCount 증가
+          if (response.status === 'success') {
+            setSquatCount(prevCount => prevCount + 1); // squatCount 1 증가
+            setStatus('success');
+          } else {
+            setStatus('failure');
           }
         } catch (error) {
           console.error('JSON 파싱 오류:', error);
@@ -115,6 +127,20 @@ const Start = () => {
 
     websocketRef.current = websocket;
   };
+
+  const generateCheckMarks = (targetSet: number, targetCheck: number) => {
+    let result = '';
+    for (let i = 0; i < targetSet; i++) {
+      if (i < targetCheck) {
+        result += `<span class="text-[#FF801E] ">v</span> `; // 완료된 체크 
+      } else {
+        result += `<span class="text-black ">o</span> `; // 미완료된 체크 
+      }
+    }
+    return result.trim();
+  };
+
+  const checkMarks = generateCheckMarks(state.exerciseSet, targetCheck);  // targetCheck 값 반영
 
   const sendFrames = (websocket: WebSocket) => {
     const canvas = document.createElement('canvas');
@@ -164,8 +190,14 @@ const Start = () => {
         <Header.BackButton />
       </Header>
       <DefaultBody hasHeader={1}>
-        <div className="flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[48px] leading-[48px] text-[#000000]">
-          {squatCount} / {state.exerciseCount * state.exerciseSet}
+        <div
+          id='check'
+          className="flex justify-center w-[100%] font-['NeoDunggeunmo'] font-normal text-[50px] leading-[34px] tracking-[3px] mb-[15px]"
+          dangerouslySetInnerHTML={{ __html: checkMarks }}
+        ></div>
+
+        <div className="flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[45px] leading-[48px] text-[#000000]">
+          {squatCount} / {state.exerciseCount}
         </div>
 
         <div className="mt-[15px] flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[48px] leading-[48px] text-[#338C00] mb-[30px]">
