@@ -51,16 +51,22 @@ function Signup () {
           <div className="w-[100%] mt-[20px] flex items-center justify-center text-[24px] font-normal text-black font-['NeoDunggeunmo']">
             정보를 입력해주세요.
           </div>
-          <div>
+      
+          <p className="mt-[18%] flex w-[100%] justify-start items-center ml-[5%] mb-[6px] font-['NeoDunggeunmo'] text-[19px]">닉네임을 입력해주세요!</p>
+          <div className="w-[100%] flex  justify-center items-start ">
+      
                 <input
-                    className="border-solid w-[80%] h-[30px] flex"
+                    className=" border border-[3px] rounded-x border-black w-[90%] h-[45px] flex font-['NeoDunggeunmo']  px-[5px]"
                     id="nickname"
                     placeholder="닉네임 입력"
                     value= {nickname}
                     onChange={handleNicknameChange}
                     />
           </div>
-          <div id="buttonCont" className="flex mt-[20%] w-[100%] h-[50%] flex-row items-center justify-center">
+          <p className="mt-[12%] flex w-[100%] justify-start items-center ml-[5%] font-['NeoDunggeunmo'] text-[19px]"> 성별을 선택해주세요!</p>
+
+          <div id="buttonCont" className="flex mt-[-80px] w-[100%] h-[50%] flex-row items-center justify-center">
+            
           <button
             className={`w-[40.93%] h-[40.61%] text-[200%] font-normal leading-[36px] text-white font-['NeoDunggeunmo'] ${gender === "male" ? "bg-[#FF801E]" : "bg-[#989C93]"}`}
             onClick={() => handleButtonClick("male")}
