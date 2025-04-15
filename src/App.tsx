@@ -13,6 +13,7 @@ import Friend from './page/friend/friend'
 import NewFriend from './page/newfriend/newfriend'
 import Signup from './page/login/signup'
 import Quest from './page/quest/quest'
+import Result from './page/result/result'
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/friend/new" element={<NewFriend />}/>
           <Route path="/signup" element={<Signup />}/>
           <Route path="/quest" element={<Quest />}/>
+          <Route path="/result" element={<Result />}/>
         </Routes>
     </Router>
     </div>
