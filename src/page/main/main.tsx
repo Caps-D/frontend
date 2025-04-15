@@ -148,8 +148,8 @@ function Main () {
         </div>
 
         {/*캐릭터*/}
-        <div className="flex w-[100%] h-[42%] justify-center items-center  ">
-        <div id='character' className=" flex w-[52%] h-[43.2%] items-center justify-center flex-row">
+        <div className="flex w-[100%] h-[40%] justify-center items-center  ">
+        <div id='character' className=" flex w-[48%] h-[100%] mt-[10px]items-center justify-center flex-row">
             <img src={`/images/여자 기본${dummydata.character.state}.svg`} className="w-[100%] flex items-center justify-center"></img>
         </div>
         </div>
