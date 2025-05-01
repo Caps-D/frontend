@@ -2,13 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/header";
 import DefaultBody from "../../components/defaultBody";
+import BottomNav from "../../components/bottomNav";
 import ExerciseBtn from "../../assets/exerciseBtn.svg?react";
 import 윗몸일으키기 from "../../assets/윗몸일으키기.svg?react";
 import 팔굽혀펴기 from "../../assets/팔굽혀펴기.svg?react";
 import 스쿼트 from "../../assets/스쿼트.svg?react";
 import Coin from "../../assets/Coin.svg?react";
 
-// 날짜 포맷 변환 함수
 const formatDateWithDay = (dateStr: string) => {
   const date = new Date(dateStr);
   const days = ["일", "월", "화", "수", "목", "금", "토"];
@@ -21,16 +21,16 @@ const formatDateWithDay = (dateStr: string) => {
 
 export default function Quest() {
   const [activeTab, setActiveTab] = useState<string>("dailyQuest");
+  const [selectedAchieve, setSelectedAchieve] = useState<any>(null);
   const navigate = useNavigate();
 
-  // 드래그 확장 상태
   const [handleY, setHandleY] = useState(0);
   const [dragging, setDragging] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
 
   const dailyQuestData = [
     {
-      date: "2025-04-30",
+      date: "2025-05-01",
       name: "윗몸일으키기",
       icon: 윗몸일으키기,
       count: 60,
@@ -40,9 +40,9 @@ export default function Quest() {
     },
   ];
 
-  const pastQuests = [
+  const pastdailyQuestsData = [
     {
-      date: "2025-04-29",
+      date: "2025-04-30",
       name: "윗몸일으키기",
       icon: 윗몸일으키기,
       count: 50,
@@ -51,7 +51,7 @@ export default function Quest() {
       reward: 500,
     },
     {
-      date: "2025-04-28",
+      date: "2025-04-29",
       name: "팔굽혀펴기",
       icon: 팔굽혀펴기,
       count: 40,
@@ -85,7 +85,6 @@ export default function Quest() {
     },
   ];
 
-  // 드래그 이벤트
   const onDragStart = (e: React.MouseEvent) => {
     setDragging(true);
     e.preventDefault();
@@ -117,7 +116,7 @@ export default function Quest() {
       <DefaultBody hasHeader={1}>
         <div className="flex flex-col items-center mt-6">
           {/* 탭 버튼 */}
-          <div className="flex mb-3">
+          <div className="flex mb-2">
             <button
               onClick={() => setActiveTab("dailyQuest")}
               className={`font-['NeoDunggeunmo'] text-2xl p-2 ${
@@ -149,122 +148,105 @@ export default function Quest() {
 
                     <div className="flex flex-row items-center">
                       <div className="flex flex-col items-center">
-                        <p className="font-['NeoDunggeunmo'] text-2xl mt-3.5 mb-3.5">
-                          운동
-                        </p>
-                        <quest.icon className="w-11 h-11"/>
+                        <p className="font-['NeoDunggeunmo'] text-2xl mt-3.5 mb-3.5">운동</p>
+                        <quest.icon className="w-11 h-11" />
                       </div>
-                      <p className="w-[1.5px] h-24 mt-6 ml-5 mr-5 bg-[#D9D9D9]" />
+                      <p className="w-[1.5px] h-24 mt-6 ml-5 mr-4 bg-[#D9D9D9]" />
                       <div className="flex flex-col items-center">
-                        <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">
-                          횟수
-                        </p>
-                        <p className="font-['NeoDunggeunmo'] w-18 h-8 bg-[#D9D9D9] rounded-[5px] flex items-center justify-center text-xl">
-                          {`${quest.count} X ${quest.sets}`}
+                        <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">횟수</p>
+                        <p className="font-['NeoDunggeunmo'] w-20 h-8 bg-[#D9D9D9] rounded-[5px] flex items-center justify-center text-2xl">
+                          {`${quest.count} x ${quest.sets}`}
                         </p>
                       </div>
-                      <p className="w-[1.5px] h-24 mt-6 ml-5 mr-5 bg-[#D9D9D9]" />
+                      <p className="w-[1.5px] h-24 mt-6 ml-4 mr-5 bg-[#D9D9D9]" />
                       <div className="flex flex-col items-center">
-                        <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">
-                          완료 여부
-                        </p>
+                        <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">완료 여부</p>
                         <p className="font-['NeoDunggeunmo'] text-2xl">
-                          {quest.completed ? "O" : "X"}
+                          {quest.completed ? "o" : "x"}
                         </p>
                       </div>
                       <p className="w-[1.5px] h-24 mt-6 ml-5 mr-5 bg-[#D9D9D9]" />
                       <div className="flex flex-col items-center">
-                        <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">
-                          보상
-                        </p>
+                        <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">보상</p>
                         <div className="flex flex-row">
                           <Coin className="w-7 h-7 mr-2" />
-                          <p className="font-['NeoDunggeunmo'] text-2xl">
-                            {quest.reward}
-                          </p>
+                          <p className="font-['NeoDunggeunmo'] text-2xl">{quest.reward}</p>
                         </div>
                       </div>
                     </div>
                   </div>
                 ))}
                 <ExerciseBtn
-                  className="mt-10"
+                  className="mt-11"
                   onClick={() => navigate("/start")}
                 />
               </div>
             )}
+
             {activeTab === "achievements" && (
-              <div className="flex flex-col items-center">
-                <div className="flex flex-row items-start">
-                  <div className="flex flex-col">
-                    <p className="font-['NeoDunggeunmo'] text-2xl mb-2">
-                      운동
-                    </p>
-                    {achievementsData.map((achieve, index) => (
-                      <achieve.icon key={index} className="mb-8" />
-                    ))}
-                  </div>
-                  <p className="w-[1.5px] h-60 mt-3 ml-5 mr-5 bg-[#D9D9D9]" />
-                  <div className="flex flex-col items-center">
-                    <p className="font-['NeoDunggeunmo'] text-2xl mb-2.5">
-                      횟수
-                    </p>
-                    {achievementsData.map((achieve, index) => (
-                      <p
-                        key={index}
-                        className="font-['NeoDunggeunmo'] text-2xl mb-8"
+              <>
+                <BottomNav />
+                <div className="flex flex-col items-center">
+                  {achievementsData.map((achieve, index) => (
+                    <div key={index}
+                      onClick={() => setSelectedAchieve(achieve)}
+                      className={`flex flex-row items-center mb-3 cursor-pointer rounded-xl border-2 ${
+                        selectedAchieve?.name === achieve.name ? "border-[#4CAF50]" : "border-transparent"
+                      }`}
                       >
-                        {achieve.count}
-                      </p>
-                    ))}
-                  </div>
-                  <p className="w-[1.5px] h-60 mt-3 ml-5 mr-5 bg-[#D9D9D9]" />
-                  <div className="flex flex-col items-center">
-                    <p className="font-['NeoDunggeunmo'] text-2xl mb-3.5">
-                      완료 여부
-                    </p>
-                    {achievementsData.map((achieve, index) => (
-                      <p
-                        key={index}
-                        className="font-['NeoDunggeunmo'] text-2xl mb-8"
-                      >
-                        {achieve.completed ? "O" : "X"}
-                      </p>
-                    ))}
-                  </div>
-                  <p className="w-[1.5px] h-60 mt-3 ml-5 mr-5 bg-[#D9D9D9]" />
-                  <div className="flex flex-col items-center">
-                    <p className="font-['NeoDunggeunmo'] text-2xl mb-3">
-                      보상
-                    </p>
-                    {achievementsData.map((achieve, index) => (
-                      <div key={index} className="flex flex-row mb-8">
-                        <Coin className="w-7 h-7 mr-2" />
-                        <p className="font-['NeoDunggeunmo'] text-2xl">
-                          {achieve.reward}
+                      <div className="flex flex-col items-center">
+                        <p className="font-['NeoDunggeunmo'] text-2xl mt-3.5 mb-3.5">운동</p>
+                        <achieve.icon />
+                      </div>
+                      <p className="w-[1.5px] h-24 mt-6 ml-5 mr-4 bg-[#D9D9D9]" />
+                      <div className="flex flex-col items-center">
+                        <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">횟수</p>
+                        <p className="font-['NeoDunggeunmo'] w-20 h-8 bg-[#D9D9D9] rounded-[5px] flex items-center justify-center text-2xl">
+                          {achieve.count}
                         </p>
                       </div>
-                    ))}
-                  </div>
+                      <p className="w-[1.5px] h-24 mt-6 ml-4 mr-5 bg-[#D9D9D9]" />
+                      <div className="flex flex-col items-center">
+                        <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">완료 여부</p>
+                        <p className="font-['NeoDunggeunmo'] text-2xl">
+                          {achieve.completed ? "o" : "x"}
+                        </p>
+                      </div>
+                      <p className="w-[1.5px] h-24 mt-6 ml-5 mr-5 bg-[#D9D9D9]" />
+                      <div className="flex flex-col items-center">
+                        <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">보상</p>
+                        <div className="flex flex-row">
+                          <Coin className="w-7 h-7 mr-2" />
+                          <p className="font-['NeoDunggeunmo'] text-2xl">{achieve.reward}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <ExerciseBtn
+                    className="mt-7"
+                    onClick={() => {
+                      if (!selectedAchieve) {
+                        alert("운동을 선택해주세요.");
+                        return;
+                      }
+                      navigate("/start", { state: selectedAchieve });
+                    }}
+                  />
                 </div>
-                <ExerciseBtn
-                  className="mt-10"
-                  onClick={() => navigate("/start")}
-                />
-              </div>
+              </>
             )}
           </div>
         </div>
       </DefaultBody>
 
-      {/* 과거 일일퀘스트: 화면 맨 아래 드래그 박스 */}
+      {/* 종료된 퀘스트 영역 */}
       {activeTab === "dailyQuest" && (
         <div
           ref={boxRef}
           onMouseDown={onDragStart}
           className="absolute bottom-0 left-0 w-full bg-[#EEEEEE]/70 rounded-t-xl overflow-hidden"
           style={{
-            height: 70 + handleY,
+            height: 60 + handleY,
             transition: dragging ? "none" : "height 0.2s",
           }}
         >
@@ -273,51 +255,38 @@ export default function Quest() {
             종료된 퀘스트
           </p>
           <div className="pt-2 space-y-4 px-4">
-            {pastQuests
-              .slice(0, Math.min(pastQuests.length, Math.floor(handleY / 100)))
+            {pastdailyQuestsData
+              .slice(0, Math.min(pastdailyQuestsData.length, Math.floor(handleY / 100)))
               .map((quest, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-col items-center text-black/70"
-                >
+                <div key={idx} className="flex flex-col items-center text-black/70">
                   <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-2">
                     {formatDateWithDay(quest.date)}
                   </p>
                   <div className="flex flex-row items-center">
                     <div className="flex flex-col">
-                      <p className="font-['NeoDunggeunmo'] text-xl mt-3 mb-3.5">
-                        운동
-                      </p>
-                      <quest.icon className="w-8 h-8"/>
+                      <p className="font-['NeoDunggeunmo'] text-xl mt-3 mb-3.5">운동</p>
+                      <quest.icon className="w-8 h-8" />
                     </div>
                     <p className="w-[1.5px] h-20 mt-3 ml-5 mr-5 bg-[#D9D9D9]/50" />
                     <div className="flex flex-col items-center">
-                      <p className="font-['NeoDunggeunmo'] text-xl mt-2.5 mb-3">
-                        횟수
-                      </p>
+                      <p className="font-['NeoDunggeunmo'] text-xl mt-2.5 mb-3">횟수</p>
                       <p className="font-['NeoDunggeunmo'] w-18 h-8 bg-[#D9D9D9] rounded-[5px] flex items-center justify-center text-xl">
-                        {`${quest.count} X ${quest.sets}`}
+                        {`${quest.count} x ${quest.sets}`}
                       </p>
                     </div>
                     <p className="w-[1.5px] h-20 mt-3 ml-5 mr-5 bg-[#D9D9D9]/50" />
                     <div className="flex flex-col items-center">
-                      <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-3.5">
-                        완료 여부
-                      </p>
+                      <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-3.5">완료 여부</p>
                       <p className="font-['NeoDunggeunmo'] text-xl">
-                        {quest.completed ? "O" : "X"}
+                        {quest.completed ? "o" : "x"}
                       </p>
                     </div>
                     <p className="w-[1.5px] h-20 mt-3 ml-5 mr-5 bg-[#D9D9D9]/50" />
                     <div className="flex flex-col items-center">
-                      <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-3.5">
-                        보상
-                      </p>
+                      <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-3.5">보상</p>
                       <div className="flex flex-row">
-                        <Coin className="w-7 h-7 mr-2" />
-                        <p className="font-['NeoDunggeunmo'] text-xl">
-                          {quest.reward}
-                        </p>
+                        <Coin className="w-6 h-6 mr-2" />
+                        <p className="font-['NeoDunggeunmo'] text-xl">{quest.reward}</p>
                       </div>
                     </div>
                   </div>
