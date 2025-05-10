@@ -18,6 +18,21 @@ const Start = () => {
   const { state } = useMode();
   const navigate = useNavigate(); // useNavigate 훅 사용
 
+
+  // 운동 종류에 따라 서버 주소를 반환
+  const getWebSocketUrl = () => {
+    if (state.exerciseType === '스쿼트') {
+      return 'ws://43.200.67.149:5001/ws';
+    } else if (state.exerciseType === '팔굽혀펴기') {
+      return 'ws://43.200.67.149:5002/ws';
+    } else {
+      // 기본값 혹은 에러 처리
+      return 'ws://43.200.67.149:5001/ws';
+    }
+  };
+
+
+
   useEffect(() => {
     // 페이지가 로드되면 자동으로 운동 시작
     const timer = setTimeout(() => {
@@ -42,6 +57,7 @@ const Start = () => {
     // 목표 세트가 달성되면 /result로 이동
     if (squatCount >= state.exerciseCount * state.exerciseSet) {
       navigate('/result');
+      websocketRef.current?.close();
     }
   }, [squatCount, state.exerciseCount, state.exerciseSet, navigate]);
 
@@ -66,7 +82,8 @@ const Start = () => {
     }
 
     console.log('WebSocket 연결 시도...');
-    const websocket = new WebSocket('ws://43.200.67.149:5001/ws');
+    const wsUrl = getWebSocketUrl();
+    const websocket = new WebSocket(wsUrl);
     websocket.binaryType = 'arraybuffer';
 
     websocket.onopen = () => {
