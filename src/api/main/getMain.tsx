@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const apiUrl = 'http://34.47.97.192:3000';
+const apiUrl = 'http://h4capston.site/api';
 
 export const GetMain = async ( ): Promise<any> => {
   axios.defaults.withCredentials = true;
