@@ -8,14 +8,14 @@ const Start = () => {
   const [isStreaming, setIsStreaming] = useState(true);
 
   const [squatCount, setSquatCount] = useState(0);
-  const [warningMessage, setWarningMessage] = useState('');
+  const [targetCheck, setTargetCheck] = useState(0);  // targetCheck 상태 추가
   const [status, setStatus] = useState<string>('failure');
   const videoRef = useRef<HTMLVideoElement>(null);
   const processedImageRef = useRef<HTMLImageElement>(null);
   const overlayWarningRef = useRef<HTMLDivElement>(null);
   const websocketRef = useRef<WebSocket | null>(null);
   const isWebSocketConnected = useRef<boolean>(false);  // 웹소켓 연결 상태 추적
-  const { state, setState } = useMode();
+  const { state } = useMode();
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
@@ -36,10 +36,12 @@ const Start = () => {
     };
   }, []);
 
-  // `squatCount`가 목표 횟수에 도달하면 자동으로 /result로 네비게이션
+  
+
   useEffect(() => {
+    // 목표 세트가 달성되면 /result로 이동
     if (squatCount >= state.exerciseCount * state.exerciseSet) {
-      navigate('/result'); // 목표를 달성하면 /result로 이동
+      navigate('/result');
     }
   }, [squatCount, state.exerciseCount, state.exerciseSet, navigate]);
 
@@ -64,7 +66,7 @@ const Start = () => {
     }
 
     console.log('WebSocket 연결 시도...');
-    const websocket = new WebSocket('ws://35.216.59.23:5001/ws');
+    const websocket = new WebSocket('ws://43.200.67.149:5001/ws');
     websocket.binaryType = 'arraybuffer';
 
     websocket.onopen = () => {
@@ -78,16 +80,33 @@ const Start = () => {
         try {
           const response = JSON.parse(event.data);
           console.log(response);
+
           if (overlayWarningRef.current) {
             overlayWarningRef.current.textContent = response.message;
             overlayWarningRef.current.style.display = response.message ? 'block' : 'none';
           }
 
-          // Update squat count
-          if (response.squat_count !== undefined) {
-            setSquatCount(response.squat_count);
-            setStatus(response.status);
-          }
+          // squatCount 업데이트
+      if (response.squat_count !== undefined) {
+        let newSquatCount = response.squat_count;
+        let newTargetCheck = targetCheck;
+
+        // 목표 세트 체크 로직
+        while (newSquatCount >= state.exerciseCount && newTargetCheck < state.exerciseSet) {
+          newSquatCount -= state.exerciseCount;
+          newTargetCheck += 1;
+        }
+
+        setSquatCount(newSquatCount);
+        setTargetCheck(newTargetCheck);
+
+        // 목표 세트 달성 시 /result로 이동
+        if (newTargetCheck >= state.exerciseSet) {
+          navigate('/result');
+        }
+
+        setStatus(response.status === 'success' ? 'success' : 'failure');
+      }
         } catch (error) {
           console.error('JSON 파싱 오류:', error);
         }
@@ -115,6 +134,20 @@ const Start = () => {
 
     websocketRef.current = websocket;
   };
+
+  const generateCheckMarks = (targetSet: number, targetCheck: number) => {
+    let result = '';
+    for (let i = 0; i < targetSet; i++) {
+      if (i < targetCheck) {
+        result += `<span class="text-[#FF801E] ">v</span> `; // 완료된 체크 
+      } else {
+        result += `<span class="text-black ">o</span> `; // 미완료된 체크 
+      }
+    }
+    return result.trim();
+  };
+
+  const checkMarks = generateCheckMarks(state.exerciseSet, targetCheck);  // targetCheck 값 반영
 
   const sendFrames = (websocket: WebSocket) => {
     const canvas = document.createElement('canvas');
@@ -164,8 +197,14 @@ const Start = () => {
         <Header.BackButton />
       </Header>
       <DefaultBody hasHeader={1}>
-        <div className="flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[48px] leading-[48px] text-[#000000]">
-          {squatCount} / {state.exerciseCount * state.exerciseSet}
+        <div
+          id='check'
+          className="flex justify-center w-[100%] font-['NeoDunggeunmo'] font-normal text-[50px] leading-[34px] tracking-[3px] mb-[15px]"
+          dangerouslySetInnerHTML={{ __html: checkMarks }}
+        ></div>
+
+        <div className="flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[45px] leading-[48px] text-[#000000]">
+          {squatCount} / {state.exerciseCount}
         </div>
 
         <div className="mt-[15px] flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[48px] leading-[48px] text-[#338C00] mb-[30px]">
