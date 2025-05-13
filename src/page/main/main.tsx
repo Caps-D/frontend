@@ -8,7 +8,20 @@ import DefaultBody from "../../components/defaultBody";
 
 function Main () {
 
-    const [ mainData, setMainData] = useState<any>([]);
+    const [ mainData, setMainData] = useState<mainData>({
+        level: 0,
+        coin: 0,
+        targetExercise: '스쿼트',
+        targetcount:0,
+        targetSet:0,
+        targetCheck:0,
+        character:{
+            gender:'female',
+            top:'',
+            pants:'',
+            state:1,
+        }
+    });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,7 +33,7 @@ function Main () {
                 setMainData(mainData.data || []);
             } catch (error) {
                 console.log("메인 정보를 불러오지 못했습니다.", error);
-                setMainData([]);
+                
             }
         };
         getChatRoomData();
@@ -35,29 +48,16 @@ function Main () {
         targetSet:number;
         targetCheck:number;
         character:{
-            gender:string;
+            gender:string|null;
             top:string|null;
             pants:string|null;
             state:number|null;
         }
     }
 
-    const dummydata:mainData = {
-        level:550,
-        coin:650,
-        targetExercise:"윗몸일으키기",
-        targetcount:30,
-        targetSet:5,
-        targetCheck:3,
-        character:{
-            gender:"female",
-            top:null,
-            pants:null,
-            state:2,
-        }
-    }
+  
 
-    const shortenedLevel = Math.floor(dummydata.level / 100); 
+    const shortenedLevel = Math.floor(mainData.level / 100); 
 
     const generateCheckMarks = (targetSet: number, targetCheck: number) => {
         let result = '';
@@ -72,8 +72,8 @@ function Main () {
       }
       
     
-      const checkMarks = generateCheckMarks(dummydata.targetSet, dummydata.targetCheck);
-      const lv_progress = dummydata.level % 100 + 5;
+      const checkMarks = generateCheckMarks(mainData.targetSet, mainData.targetCheck);
+      const lv_progress = mainData.level % 100 + 5;
 
 
       
@@ -118,7 +118,7 @@ function Main () {
                     dy="0.4em" 
                     fill="black"
                     className="font-['NeoDunggeunmo'] font-normal text-[22px] leading-[20px] ml-[6px]">
-                    {dummydata.coin}
+                    {mainData.coin}
                 </text>
                 </div>
             </div>
@@ -139,7 +139,7 @@ function Main () {
         <div id='targetCont' className="flex flex-col justify-start items-center w-full mt-[45px] mb-[5%]">
             <div id='title' className="font-['NeoDunggeunmo'] font-normal text-[27px] leading-[24px]">오늘의 목표</div>
             <div id='target'className="font-['NeoDunggeunmo'] font-normal text-[17px] leading-[13px] mt-[16px]">
-                {dummydata.targetExercise} {dummydata.targetcount}회 X {dummydata.targetSet}세트
+                {mainData.targetExercise} {mainData.targetcount}회 X {mainData.targetSet}세트
             </div>
             <div id='check' className="font-['NeoDunggeunmo'] font-normal text-[70px] leading-[34px] mt-[16px] tracking-[-9px]" dangerouslySetInnerHTML={{ __html: checkMarks }}
          >
@@ -150,7 +150,7 @@ function Main () {
         {/*캐릭터*/}
         <div className="flex w-[100%] h-[40%] justify-center items-center  ">
         <div id='character' className=" flex w-[48%] h-[100%] mt-[10px]items-center justify-center flex-row">
-            <img src={`/images/여자 기본${dummydata.character.state}.svg`} className="w-[100%] flex items-center justify-center"></img>
+            <img src={`/images/${mainData.character.gender} 기본${mainData.character.state}.svg`} className="w-[100%] flex items-center justify-center"></img>
         </div>
         </div>
         <CommonBtn status={1} text="운동 시작하기" onClick={()=>navigate('/select/mode')} hasNav={true}></CommonBtn>
