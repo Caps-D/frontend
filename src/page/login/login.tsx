@@ -4,7 +4,7 @@
 function Login () {
 
   const handleKakao = () => {
-      window.location.href = "http://34.47.97.192:3000/auth/kakao"
+      window.location.href = "http://h4capston.site/auth/kakao"
   }
 
   const handleNaver = () => {
