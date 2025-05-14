@@ -6,7 +6,7 @@ export const GetRank = async ( ): Promise<any> => {
   axios.defaults.withCredentials = true;
   try {
     const response: AxiosResponse<any> = await axios.get(
-      `${apiUrl}/rank`,
+      `${apiUrl}/ranking`,
       {
         withCredentials: true,
       }
