@@ -8,6 +8,7 @@ import 윗몸일으키기 from "../../assets/윗몸일으키기.svg?react";
 import 팔굽혀펴기 from "../../assets/팔굽혀펴기.svg?react";
 import 스쿼트 from "../../assets/스쿼트.svg?react";
 import Coin from "../../assets/Coin.svg?react";
+import Star from "../../assets/Star.svg?react";
 
 const formatDateWithDay = (dateStr: string) => {
   const date = new Date(dateStr);
@@ -37,6 +38,7 @@ export default function Quest() {
       sets: 3,
       completed: false,
       reward: 600,
+      exp: 20,
     },
   ];
 
@@ -49,6 +51,7 @@ export default function Quest() {
       sets: 3,
       completed: true,
       reward: 500,
+      exp: 30
     },
     {
       date: "2025-04-29",
@@ -58,6 +61,7 @@ export default function Quest() {
       sets: 3,
       completed: true,
       reward: 400,
+      exp: 10
     },
   ];
 
@@ -65,21 +69,21 @@ export default function Quest() {
     {
       name: "윗몸일으키기",
       icon: 윗몸일으키기,
-      count: 20,
+      count: 200,
       completed: false,
       reward: 20,
     },
     {
       name: "팔굽혀펴기",
       icon: 팔굽혀펴기,
-      count: 15,
+      count: 150,
       completed: false,
       reward: 15,
     },
     {
       name: "스쿼트",
       icon: 스쿼트,
-      count: 20,
+      count: 200,
       completed: false,
       reward: 20,
     },
@@ -167,10 +171,16 @@ export default function Quest() {
                       </div>
                       <p className="w-[1.5px] h-24 mt-6 ml-5 mr-5 bg-[#D9D9D9]" />
                       <div className="flex flex-col items-center">
-                        <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">보상</p>
-                        <div className="flex flex-row">
-                          <Coin className="w-7 h-7 mr-2" />
-                          <p className="font-['NeoDunggeunmo'] text-2xl">{quest.reward}</p>
+                        <p className="font-['NeoDunggeunmo'] text-2xl mt-6 mb-1">보상</p>
+                        <div className="flex flex-col">
+                           <div className="flex flex-row">
+                            <Coin className="w-5 h-5 mr-2 mt-1" />
+                            <p className="font-['NeoDunggeunmo'] text-2xl">{quest.reward}</p>
+                          </div>
+                          <div className="flex flex-row">
+                            <Star className="w-5 h-5 mr-2 mt-1"/>
+                            <p className="font-['NeoDunggeunmo'] text-2xl">{quest.exp}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -283,11 +293,17 @@ export default function Quest() {
                     </div>
                     <p className="w-[1.5px] h-20 mt-3 ml-5 mr-5 bg-[#D9D9D9]/50" />
                     <div className="flex flex-col items-center">
-                      <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-3.5">보상</p>
-                      <div className="flex flex-row">
-                        <Coin className="w-6 h-6 mr-2" />
-                        <p className="font-['NeoDunggeunmo'] text-xl">{quest.reward}</p>
-                      </div>
+                      <p className="font-['NeoDunggeunmo'] text-xl mt-5">보상</p>
+                          <div className="flex flex-col">
+                           <div className="flex flex-row">
+                            <Coin className="w-4 h-4 mr-2 mt-1" />
+                            <p className="font-['NeoDunggeunmo'] text-lg">{quest.reward}</p>
+                          </div>
+                          <div className="flex flex-row">
+                            <Star className="w-4 h-4 mr-2 mt-1"/>
+                            <p className="font-['NeoDunggeunmo'] text-lg">{quest.exp}</p>
+                          </div>
+                        </div>
                     </div>
                   </div>
                 </div>
