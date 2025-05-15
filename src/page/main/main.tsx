@@ -17,8 +17,8 @@ function Main () {
         targetCheck:0,
         character:{
             gender:'female',
-            top:'',
-            pants:'',
+            top:'top2',
+            pants:'pants2',
             state:1,
         }
     });
@@ -148,11 +148,37 @@ function Main () {
         </div>
 
         {/*캐릭터*/}
-        <div className="flex w-[100%] h-[40%] justify-center items-center  ">
-        <div id='character' className=" flex w-[48%] h-[100%] mt-[10px]items-center justify-center flex-row">
-            <img src={`/images/${mainData.character.gender} 기본${mainData.character.state}.svg`} className="w-[100%] flex items-center justify-center"></img>
-        </div>
-        </div>
+    <div className="flex w-full h-[40%] justify-center items-center">
+  <div
+    id="character"
+    className="relative flex w-[48%] h-full mt-[10px] items-center justify-center"
+    style={{ aspectRatio: '1/1' }}
+  >
+    {/* 캐릭터 이미지 */}
+    <img
+      src={`/images/${mainData.character.gender} 기본${mainData.character.state}.svg`}
+      className="absolute top-0 left-0 w-full h-full object-contain"
+      alt="캐릭터"
+    />
+    {/* 옷 이미지 (위에 덮어씌움) */}
+    {mainData.character.top && (
+      <img
+        src={`/src/assets/${mainData.character.top}.svg`}
+        className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none"
+        alt="상의"
+      />
+    )}
+
+    {mainData.character.pants && (
+      <img
+        src={`/src/assets/${mainData.character.pants}.svg`}
+        className="absolute top-0 z-0 w-full h-full object-contain pointer-events-none"
+        alt="하의"
+      />
+    )}
+  </div>
+</div>
+
         <CommonBtn status={1} text="운동 시작하기" onClick={()=>navigate('/select/mode')} hasNav={true}></CommonBtn>
         <BottomNav activeIndex={1}></BottomNav>
         
