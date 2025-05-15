@@ -27,7 +27,7 @@ export default function Friend() {
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        const response = await fetch("http://h4capston.site/api/friends");
+        const response = await fetch("https://h4capston.site/api/friends");
         if (!response.ok) {
           throw new Error("Failed to fetch friends");
         }
