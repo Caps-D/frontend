@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../components/header";
 import DefaultBody from "../../components/defaultBody";
 import BottomNav from "../../components/bottomNav";
@@ -9,18 +9,39 @@ import DeleteBtn from "../../assets/DeleteBtn.svg?react";
 import DeleteFriendBtn from "../../assets/DeleteFriendBtn.svg?react";
 import { useNavigate } from "react-router-dom";
 
-const dummyData = [
-  { nickname: "박현준", level: 4 },
-  { nickname: "신창희", level: 5 },
-  { nickname: "정혜원", level: 1 },
-  { nickname: "조예령", level: 3 }
-];
-
 export default function Friend() {
+
+  interface Friend {
+  nickname: string;
+  level: number;
+}
+
+  const [friends, setFriends] = useState<Friend[]>([]);
   const navigate = useNavigate();
-  const [friends, setFriends] = useState(dummyData);
   const [searchText, setSearchText] = useState("");
   const [selectedForDelete, setSelectedForDelete] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch friends data from API
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch("http://h4capston.site/api/friends");
+        if (!response.ok) {
+          throw new Error("Failed to fetch friends");
+        }
+        const data = await response.json();
+        setFriends(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFriends();
+  }, []);
 
   const handleDelete = (nickname: string) => {
     setFriends(prev => prev.filter(friend => friend.nickname !== nickname));
@@ -57,46 +78,52 @@ export default function Friend() {
           </div>
 
           {/* 친구 목록 */}
-          <div className="flex flex-col w-full h-full">
-            {filteredFriends.map(friend => {
-              const isDeleting = selectedForDelete === friend.nickname;
+          {loading ? (
+            <div>Loading...</div>
+          ) : error ? (
+            <div>Error: {error}</div>
+          ) : (
+            <div className="flex flex-col w-full h-full">
+              {filteredFriends.map(friend => {
+                const isDeleting = selectedForDelete === friend.nickname;
 
-              return (
-                <div key={friend.nickname}>
-                  <div className="w-[95%] h-0 border border-[#D9D9D9]"></div>
-                  <div className="flex flex-row p-3">
-                    <div className="flex mr-auto text-2xl text-shadow-md font-normal font-['NeoDunggeunmo']">
-                      {friend.nickname}
-                      <div className="relative ml-2 w-8 h-8">
-                        <Level className="w-full h-full" />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-xl font-normal mt-1.5">
-                          {friend.level}
-                        </span>
+                return (
+                  <div key={friend.nickname}>
+                    <div className="w-[95%] h-0 border border-[#D9D9D9]"></div>
+                    <div className="flex flex-row p-3">
+                      <div className="flex mr-auto text-2xl text-shadow-md font-normal font-['NeoDunggeunmo']">
+                        {friend.nickname}
+                        <div className="relative ml-2 w-8 h-8">
+                          <Level className="w-full h-full" />
+                          <span className="absolute inset-0 flex items-center justify-center text-white text-xl font-normal mt-1.5">
+                            {friend.level}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex ml-auto mr-4 items-center justify-center">
+                        {isDeleting ? (
+                          <DeleteFriendBtn 
+                            onClick={() => {
+                              const confirmDelete = confirm("정말 삭제하시겠습니까?");
+                              if (confirmDelete) {
+                                handleDelete(friend.nickname);
+                                setSelectedForDelete(null);
+                              } else {
+                                setSelectedForDelete(null);
+                              }
+                            }}
+                          />
+                        ) : (
+                          <DeleteBtn onClick={() => setSelectedForDelete(friend.nickname)} />
+                        )}
                       </div>
                     </div>
-                    <div className="flex ml-auto mr-4 items-center justify-center">
-                      {isDeleting ? (
-                        <DeleteFriendBtn 
-                          onClick={() => {
-                            const confirmDelete = confirm("정말 삭제하시겠습니까?");
-                            if (confirmDelete) {
-                              handleDelete(friend.nickname);
-                              setSelectedForDelete(null);
-                            } else {
-                              setSelectedForDelete(null);
-                            }
-                          }}
-                        />
-                      ) : (
-                        <DeleteBtn onClick={() => setSelectedForDelete(friend.nickname)} />
-                      )}
-                    </div>
                   </div>
-                </div>
-              );
-            })}
-            <div className="w-[95%] h-0 border border-[#D9D9D9]"></div>
-          </div>
+                );
+              })}
+              <div className="w-[95%] h-0 border border-[#D9D9D9]"></div>
+            </div>
+          )}
         </div>
       </DefaultBody>
       <BottomNav />
