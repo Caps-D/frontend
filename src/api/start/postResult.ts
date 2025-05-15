@@ -2,11 +2,16 @@ import axios, { AxiosResponse } from "axios";
 
 const apiUrl = 'https://h4capston.site/api';
 
-export const GetRank = async ( ): Promise<any> => {
+export const PostResult = async (questType:string, exerciseType:string,completedCount:number ): Promise<any> => {
   axios.defaults.withCredentials = true;
   try {
-    const response: AxiosResponse<any> = await axios.get(
-      `${apiUrl}/ranking`,
+    const response: AxiosResponse<any> = await axios.post(
+      `${apiUrl}/submit_quest`,
+      {
+        questType:questType,
+        exerciseType:exerciseType,
+        completedCount:completedCount,
+      },
       {
         withCredentials: true,
       }

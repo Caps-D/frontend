@@ -4,19 +4,15 @@
 function Login () {
 
   const handleKakao = () => {
-<<<<<<< HEAD
-      window.location.href = "http://h4capston.site/auth/kakao"
-=======
-      window.location.href = "http://h4capston.site/api/auth/kakao"
->>>>>>> 85183ba (feat: 운동 세트 체크기능 추가)
+      window.location.href = "https://h4capston.site/api/auth/kakao"
   }
 
   const handleNaver = () => {
-    window.location.href = "http://h4capston.site/api/auth/naver"
+    window.location.href = "https://h4capston.site/api/auth/naver"
 }
 
 const handleGoogle = () => {
-  window.location.href = "http://h4capston.site/api/auth/google"
+  window.location.href = "https://h4capston.site/api/auth/google"
 }
 
   return (

@@ -43,7 +43,7 @@ export default function Quest() {
   useEffect(() => {
     const fetchDailyQuests = async () => {
       try {
-        const res = await fetch("http://h4capston.site/api/daily-quests/today");
+        const res = await fetch("https://h4capston.site/api/daily-quests/today");
         if (!res.ok) throw new Error("서버 오류");
         const data = await res.json();
         console.log("일일 퀘스트:", data);        
@@ -60,7 +60,7 @@ export default function Quest() {
     useEffect(() => {
     const fetchChallenge = async () => {
       try {
-        const res = await fetch("http://h4capston.site/api/challenge");
+        const res = await fetch("https://h4capston.site/api/challenge");
         if (!res.ok) throw new Error("서버 오류");
         const data = await res.json();
         console.log("도전 과제:", data);   
@@ -77,7 +77,7 @@ export default function Quest() {
   useEffect(() => {
     const fetchEndedQuest = async () => {
       try {
-        const res = await fetch("http://h4capston.site/api/ended-quests");
+        const res = await fetch("https://h4capston.site/api/ended-quests");
         if (!res.ok) throw new Error("서버 오류");
         const data = await res.json();
         console.log("종료된 퀘스트:", data);   

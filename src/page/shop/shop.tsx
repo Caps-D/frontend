@@ -16,6 +16,7 @@ import Bicon3 from '../../assets/Bottom3.svg?react'
 import Bicon4 from '../../assets/Bottom4.svg?react'
 import Bicon5 from '../../assets/Bottom5.svg?react'
 import Bicon6 from '../../assets/Bottom6.svg?react'
+
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import './shop.css'

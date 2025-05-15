@@ -3,6 +3,7 @@ import DefaultBody from '../../components/defaultBody';
 import Header from '../../components/header';
 import { useMode } from "../../context/ExerciseContext"; // Context Hook import
 import { useNavigate } from 'react-router-dom'; // useNavigate import
+import { PostResult } from '../../api/start/postResult';
 
 const Start = () => {
   const [isStreaming, setIsStreaming] = useState(true);
@@ -25,6 +26,8 @@ const Start = () => {
       return 'ws://43.200.67.149:5001/ws';
     } else if (state.exerciseType === '팔굽혀펴기') {
       return 'ws://43.200.67.149:5002/ws';
+    } else if (state.exerciseType === '플랭크') {
+      return 'ws://43.200.67.149:5003/ws';
     } else {
       // 기본값 혹은 에러 처리
       return 'ws://43.200.67.149:5001/ws';
@@ -51,16 +54,25 @@ const Start = () => {
     };
   }, []);
 
-  
-
   useEffect(() => {
-    // 목표 세트가 달성되면 /result로 이동
-    if (squatCount >= state.exerciseCount * state.exerciseSet) {
-      navigate('/result');
-      websocketRef.current?.close();
-    }
-  }, [squatCount, state.exerciseCount, state.exerciseSet, navigate]);
-
+  // 목표 세트가 달성되면 handlePostResult 실행
+  if (squatCount >= state.exerciseCount * state.exerciseSet) {
+    (async () => {
+      try {
+        const response = await PostResult(state.mode, state.exerciseType, state.exerciseCount * state.exerciseSet);
+        console.log(`회원가입 결과: ${response}`);
+        const code = response.status;
+        // 결과에 따라 /main으로 이동
+        navigate('/main');
+      } catch (error) {
+        console.error("회원가입 실패", error);
+        alert(error);
+      } finally {
+        websocketRef.current?.close();
+      }
+    })();
+  }
+}, [squatCount, state.exerciseCount, state.exerciseSet, state.mode, state.exerciseType, navigate]);
   const startWebcam = async () => {
     try {
       console.log('🔍 웹캠 요청 중...');
@@ -74,6 +86,8 @@ const Start = () => {
       alert('웹캠을 사용할 수 없습니다. 권한을 확인하세요.');
     }
   };
+
+
 
   const connectWebSocket = () => {
     if (isWebSocketConnected.current) {
