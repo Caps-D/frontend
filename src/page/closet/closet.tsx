@@ -2,12 +2,12 @@ import Header from '../../components/header'
 import Woman1 from '../../assets/Woman1.svg?react'
 import DressBtn from '../../assets/DressBtn.svg?react'
 import CancelBtn from '../../assets/CancelBtn.svg?react'
-import Outer1 from '../../assets/Outer1.svg?react'
-import Outer2 from '../../assets/Outer2.svg?react'
-import Outer3 from '../../assets/Outer3.svg?react'
-import Outer4 from '../../assets/Outer4.svg?react'
-import Outer5 from '../../assets/Outer5.svg?react'
-import Outer6 from '../../assets/Outer6.svg?react'
+import Outer1 from '../../assets/top1.svg?react'
+import Outer2 from '../../assets/top2.svg?react'
+import Outer3 from '../../assets/top3.svg?react'
+import Outer4 from '../../assets/top4.svg?react'
+import Outer5 from '../../assets/top5.svg?react'
+import Outer6 from '../../assets/top6.svg?react'
 import { useState } from 'react'
 import './closet.css'
 
@@ -42,15 +42,20 @@ export default function Closet() {
             </Header>
 
             {/* 캐릭터 영역 */}
-            <div className="relative mt-44 w-[48.53%] h-[36.2%]">
+                <div className="flex w-full h-[40%] mt-29 justify-center items-center">
+
+            <div className="relative flex w-[48%] h-full mt-[10px] items-center justify-center">
                 <Woman1 className="w-full h-full" />
-                {showClothes === 'outer1' && <Outer1 className="absolute top-[95px] left-[66px] w-[48.53%] h-[72%]" />}
-                {showClothes === 'outer2' && <Outer2 className="absolute top-[95px] left-[66px] w-[48.53%] h-[72%]" />}
-                {showClothes === 'outer3' && <Outer3 className="absolute top-[95px] left-[66px] w-[48.53%] h-[72%]" />}
-                {showClothes === 'outer4' && <Outer4 className="absolute top-[95px] left-[66px] w-[48.53%] h-[72%]" />}
-                {showClothes === 'outer5' && <Outer5 className="absolute top-[95px] left-[66px] w-[48.53%] h-[72%]" />}
-                {showClothes === 'outer6' && <Outer6 className="absolute top-[95px] left-[66px] w-[48.53%] h-[72%]" />}
+                {showClothes === 'outer1' && <Outer1 className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none" />}
+                {showClothes === 'outer2' && <Outer2 className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none" />}
+                {showClothes === 'outer3' && <Outer3 className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none" />}
+                {showClothes === 'outer4' && <Outer4 className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none" />}
+                {showClothes === 'outer5' && <Outer5 className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none" />}
+                {showClothes === 'outer6' && <Outer6 className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none" />}
             </div>
+            </div>
+
+            {/* 캐릭터 설명 */}
 
             {/* 버튼 */}
             <div className="flex flex-row w-full h-[5.83%] items-center justify-center mt-8 gap-3.5">
@@ -66,19 +71,19 @@ export default function Closet() {
                         className={`closet-inner w-[24.53%] h-full ${showClothes === 'outer1' ? 'active' : ''}`}
                         onClick={() => handleClothesBtn('outer1')}
                     >
-                        <Outer1 className="w-full h-[82%]" />
+                        <Outer1 className="w-full h-[180%] mt-[-65px]" />
                     </button>
                     <button
                         className={`closet-inner w-[24.53%] h-full ${showClothes === 'outer2' ? 'active' : ''}`}
                         onClick={() => handleClothesBtn('outer2')}
                     >
-                        <Outer2 className="w-full h-[82%]" />
+                        <Outer2 className="w-full h-[180%] mt-[-65px]" />
                     </button>
                     <button
                         className={`closet-inner w-[24.53%] h-full ${showClothes === 'outer3' ? 'active' : ''}`}
                         onClick={() => handleClothesBtn('outer3')}
                     >
-                        <Outer3 className="w-full h-[82%]" />
+                        <Outer3 className="w-full h-[180%] mt-[-65px]" />
                     </button>
                 </div>
 
@@ -88,19 +93,19 @@ export default function Closet() {
                         className={`closet-inner w-[24.53%] h-full ${showClothes === 'outer4' ? 'active' : ''}`}
                         onClick={() => handleClothesBtn('outer4')}
                     >
-                        <Outer4 className="w-full h-[82%]" />
+                        <Outer4 className="w-full h-[180%] mt-[-65px]" />
                     </button>
                     <button
                         className={`closet-inner w-[24.53%] h-full ${showClothes === 'outer5' ? 'active' : ''}`}
                         onClick={() => handleClothesBtn('outer5')}
                     >
-                        <Outer5 className="w-full h-[82%]" />
+                        <Outer5 className="w-full h-[180%] mt-[-65px]" />
                     </button>
                     <button
                         className={`closet-inner w-[24.53%] h-full ${showClothes === 'outer6' ? 'active' : ''}`}
                         onClick={() => handleClothesBtn('outer6')}
                     >
-                        <Outer6 className="w-full h-[82%]" />
+                        <Outer6 className="w-full h-[180%] mt-[-65px]" />
                     </button>
                 </div>
             </div>

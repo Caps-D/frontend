@@ -3,14 +3,19 @@ import Gold from '../../assets/Gold.svg?react'
 import Woman1 from '../../assets/Woman1.svg?react'
 import PurchaseBtn from '../../assets/PurchaseBtn.svg?react'
 import CancelBtn from '../../assets/CancelBtn.svg?react'
-import Bottom1 from '../../assets/Bottom1.svg?react'
-import Bottom2 from '../../assets/Bottom2.svg?react'
-import Bottom3 from '../../assets/Bottom3.svg?react'
-import Bottom4 from '../../assets/Bottom4.svg?react'
-import Bottom5 from '../../assets/Bottom5.svg?react'
-import Bottom6 from '../../assets/Bottom6.svg?react'
+import Bottom1 from '../../assets/pants1.svg?react'
+import Bottom2 from '../../assets/pants2.svg?react'
+import Bottom3 from '../../assets/pants3.svg?react'
+import Bottom4 from '../../assets/pants4.svg?react'
+import Bottom5 from '../../assets/pants5.svg?react'
+import Bottom6 from '../../assets/pants6.svg?react'
 import Coin from '../../assets/Coin.svg?react'
-
+import Bicon1 from '../../assets/Bottom1.svg?react'
+import Bicon2 from '../../assets/Bottom2.svg?react'
+import Bicon3 from '../../assets/Bottom3.svg?react'
+import Bicon4 from '../../assets/Bottom4.svg?react'
+import Bicon5 from '../../assets/Bottom5.svg?react'
+import Bicon6 from '../../assets/Bottom6.svg?react'
 import { useState } from 'react'
 import './shop.css'
 
@@ -31,6 +36,15 @@ const bottomComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> 
   bottom4: Bottom4,
   bottom5: Bottom5,
   bottom6: Bottom6,
+}
+
+const bottomIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
+  bottom1: Bicon1, 
+  bottom2: Bicon2,
+  bottom3: Bicon3,
+  bottom4: Bicon4,
+  bottom5: Bicon5,
+  bottom6: Bicon6,
 }
 
 export default function Shop() {
@@ -84,7 +98,7 @@ export default function Shop() {
         {selectedBottom && (
           (() => {
             const SelectedComp = bottomComponents[selectedBottom]
-            return <SelectedComp className="absolute top-[170px] left-[87px] w-[31%] h-[57%]" />
+            return <SelectedComp className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none" />
           })()
         )}
       </div>
@@ -99,7 +113,7 @@ export default function Shop() {
       <div className="flex flex-col shop w-full h-[29.1%] mt-auto">
         <div className="flex flex-row w-full h-[50%] justify-center gap-8 mt-6">
           {bottoms.slice(0, 3).map(bottom => {
-            const Comp = bottomComponents[bottom.id]
+            const Comp = bottomIcons[bottom.id]
             return (
               <button
                 key={bottom.id}
@@ -118,7 +132,7 @@ export default function Shop() {
 
         <div className="flex flex-row w-full h-[50%] justify-center gap-8 mt-3 mb-6">
           {bottoms.slice(3).map(bottom => {
-            const Comp = bottomComponents[bottom.id]
+            const Comp = bottomIcons[bottom.id]
             return (
               <button
                 key={bottom.id}

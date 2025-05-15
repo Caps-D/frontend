@@ -25,6 +25,8 @@ const Start = () => {
       return 'ws://43.200.67.149:5001/ws';
     } else if (state.exerciseType === '팔굽혀펴기') {
       return 'ws://43.200.67.149:5002/ws';
+    }else if (state.exerciseType === '플랭크') {
+      return 'ws://43.200.67.149:5003/ws';
     } else {
       // 기본값 혹은 에러 처리
       return 'ws://43.200.67.149:5001/ws';
