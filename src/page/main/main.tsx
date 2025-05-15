@@ -37,10 +37,11 @@ function Main () {
                 setMainData(mainData.data || []);
                 setState((prevState) => ({
                 ...prevState,
-                exerciseCount:mainData.targetcount,
-                exerciseSet:mainData.targetSet,
-                exerciseType:mainData.targetExercise
-    }));console.log(mainData.targetcount, mainData.targetSet, mainData.targetExercise);
+                exerciseCount:mainData.data.targetcount,
+                exerciseSet:mainData.data.targetSet,
+                exerciseType:mainData.data.targetExercise
+    }));
+    console.log(mainData.data.targetcount, mainData.data.targetSet, mainData.data.targetExercise);
 
             } catch (error) {
                 console.log("메인 정보를 불러오지 못했습니다.", error);
