@@ -3,7 +3,8 @@ interface KakaoStatic {
   isInitialized: () => boolean;
   Share: {
     sendScrap: (options: { requestUrl: string }) => void;
-    sendDefault: (options: any) => void; // sendDefault 메서드 추가
+    sendDefault: (options: any) => void;
+    uploadImage: (options: { file: FileList }) => Promise<any>; // 이 부분 추가!
   };
 }
 
