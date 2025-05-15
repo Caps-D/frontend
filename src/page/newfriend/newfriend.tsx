@@ -5,6 +5,7 @@ import BottomNav from "../../components/bottomNav";
 import Search from "../../assets/Search.svg?react";
 import Level from "../../assets/Level.svg?react";
 import AddFriendBtn from "../../assets/AddFriendBtn.svg?react";
+import axios from "axios";
 
 const dummyData = [
   { nickname: "나는 고수다", level: 10 }
@@ -19,10 +20,23 @@ export default function NewFriend() {
     friend.nickname.includes(searchText)
   );
 
-  const handleAddFriend = (nickname: string) => {
-        const confirmAdd = confirm("api 연동 후 친구 추가 가능");
+  const handleAddFriend = async (nickname: string) => {
+    try {
+      const response = await axios.post("https://h4capston.site/api/addFriend", {
+        nickname
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        alert("친구가 성공적으로 추가되었습니다.");
+        setAddedFriends(prev => [...prev, nickname]);
+      } else {
+        alert("친구 추가에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("친구 추가 오류:", error);
+      alert("서버 오류로 친구를 추가할 수 없습니다.");
     }
-  
+  };
 
   return (
     <div className="flex flex-col w-full h-full items-center justify-start">
@@ -62,16 +76,16 @@ export default function NewFriend() {
                       </div>
                     </div>
                     <div className="flex ml-auto mr-4 items-center justify-center">
-                        {!addedFriends.includes(friend.nickname) && (
-                            <AddFriendBtn
-                            onClick={() => {
-                                const confirmAdd = confirm("정말 추가하시겠습니까?");
-                                if (confirmAdd) {
-                                handleAddFriend(friend.nickname);
-                                }
-                            }}
-                            />
-                        )}
+                      {!addedFriends.includes(friend.nickname) && (
+                        <AddFriendBtn
+                          onClick={() => {
+                            const confirmAdd = confirm("정말 추가하시겠습니까?");
+                            if (confirmAdd) {
+                              handleAddFriend(friend.nickname);
+                            }
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -85,3 +99,4 @@ export default function NewFriend() {
     </div>
   );
 }
+
