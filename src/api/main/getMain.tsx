@@ -18,9 +18,9 @@ export const GetMain = async ( ): Promise<any> => {
     if (error.response) {
       const { status, data } = error.response;
       console.error("Error response:", status, data);
-    //   if (status === 401) {
-    //     console.error("401 Unauthorized: 토큰이 유효하지 않거나 만료되었습니다.");
-    
+      if (status === 401) {
+        console.error("401 Unauthorized: 토큰이 유효하지 않거나 만료되었습니다.");
+        alert("로그인 세션이 만료되었습니다. 다시 로그인 해주세요.");
     //     if (retryCount < 2) {
     //         console.log(`🔄 재시도 중... (${retryCount + 1}/2)`);
             
@@ -38,8 +38,8 @@ export const GetMain = async ( ): Promise<any> => {
     //     }
     
     //     console.error("❌ 2번 재시도 후에도 실패. 로그인 페이지로 이동합니다.");
-    //     window.location.href = "/login";
-    // }
+       window.location.href = "/";
+     }
     } else if (error.request) {
       console.error("No response received:", error.request);
     } else {

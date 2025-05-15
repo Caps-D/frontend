@@ -5,8 +5,11 @@ import { GetMain } from "../../api/main/getMain";
 import { useEffect, useState } from "react";
 import { useNavigate  } from "react-router-dom";
 import DefaultBody from "../../components/defaultBody";
+import { useMode } from "../../context/ExerciseContext"; // Context Hook import
 
 function Main () {
+
+    const { state, setState } = useMode();
 
     const [ mainData, setMainData] = useState<mainData>({
         level: 0,
@@ -17,8 +20,8 @@ function Main () {
         targetCheck:0,
         character:{
             gender:'female',
-            top:'top2',
-            pants:'pants2',
+            top:'',
+            pants:'',
             state:1,
         }
     });
@@ -31,6 +34,12 @@ function Main () {
                 const mainData = await GetMain();
                 console.log(mainData.data);
                 setMainData(mainData.data || []);
+                setState((prevState) => ({
+      ...prevState,
+      exerciseCount:mainData.targetcount,
+      exerciseSet:mainData.targetSet,
+      exerciseType:mainData.targetExercise
+    }));
             } catch (error) {
                 console.log("메인 정보를 불러오지 못했습니다.", error);
                 

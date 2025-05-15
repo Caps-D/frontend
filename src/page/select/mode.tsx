@@ -25,15 +25,17 @@ function Mode() {
     console.log("업데이트:",mode);
     console.log(state);
   };
+// '다음' 버튼 클릭 시 동작
+const handleNextClick = () => {
+  if (!selectedMode) {
+    alert("모드를 선택해주세요.");
+  } else if (selectedMode === "normal") {
+    navigate('/start');
+  } else {
+    navigate('/select/exercise');
+  }
+};
 
-  // '다음' 버튼 클릭 시 동작
-  const handleNextClick = () => {
-    if (!selectedMode) {
-      alert("모드를 선택해주세요.");
-    } else {
-      navigate('/select/exercise');
-    }
-  };
 
   return (
     <div className="flex flex-col items-center justify-start w-full h-full">

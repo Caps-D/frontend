@@ -4,15 +4,15 @@
 function Login () {
 
   const handleKakao = () => {
-      window.location.href = "http://h4capston.site/api/auth/kakao"
+      window.location.href = "https://h4capston.site/api/auth/kakao"
   }
 
   const handleNaver = () => {
-    window.location.href = "http://h4capston.site/api/auth/naver"
+    window.location.href = "https://h4capston.site/api/auth/naver"
 }
 
 const handleGoogle = () => {
-  window.location.href = "http://h4capston.site/api/auth/google"
+  window.location.href = "https://h4capston.site/api/auth/google"
 }
 
   return (
