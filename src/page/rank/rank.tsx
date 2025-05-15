@@ -23,7 +23,7 @@ function Rank () {
             try {
                 const RankData = await GetRank();
                 console.log(RankData.data);
-                setRankData(RankData.data || []);
+                setRankData(RankData.data.ranking || []);
             } catch (error) {
                 console.log("메인 정보를 불러오지 못했습니다.", error);
                 setRankData([]);
@@ -72,7 +72,7 @@ function Rank () {
           </tr>
         </thead>
         <tbody>
-          {dummyData.map((data) => (
+          {RankData.map((data:any) => (
             <tr key={data.rank} className="flex justify-between w-[80%] mb-[10px]" >
               <td className={`${getRankStyle(data.rank)} text-center flex`}>{data.rank}</td>
               <td className="flex font-normal text-[24px] text-black font-['NeoDunggeunmo']">{data.nickname}</td>
