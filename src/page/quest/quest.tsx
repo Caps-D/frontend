@@ -9,6 +9,9 @@ import 팔굽혀펴기 from "../../assets/팔굽혀펴기.svg?react";
 import 스쿼트 from "../../assets/스쿼트.svg?react";
 import Coin from "../../assets/Coin.svg?react";
 import Star from "../../assets/Star.svg?react";
+import { fetchDailyQuests } from "../../api/quest/getquest";
+import { fetchChallenge } from "../../api/quest/getChallenge";
+import { fetchEndedQuest } from "../../api/quest/getEndedQuest";
 
 const formatDateWithDay = (dateStr: string) => {
   const date = new Date(dateStr);
@@ -41,54 +44,49 @@ export default function Quest() {
   const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchDailyQuests = async () => {
+    const fetchDailyQuestsAPI = async () => {
       try {
-        const res = await fetch("https://h4capston.site/api/daily-quests/today");
-        if (!res.ok) throw new Error("서버 오류");
-        const data = await res.json();
-        console.log("일일 퀘스트:", data);        
-        setDailyQuestData(data);
+        const res  = await fetchDailyQuests();
+        
+        console.log("일일 퀘스트:", res);        
+        setDailyQuestData(res);
       } catch (err) {
         setError("일일퀘스트 데이터를 불러오지 못했습니다.");
       } finally {
         setLoading(false);
       }
     };
-    fetchDailyQuests();
+    fetchDailyQuestsAPI();
   }, []);
 
     useEffect(() => {
-    const fetchChallenge = async () => {
+    const fetchChallengeAPI = async () => {
       try {
-        const res = await fetch("https://h4capston.site/api/challenge");
-        if (!res.ok) throw new Error("서버 오류");
-        const data = await res.json();
-        console.log("도전 과제:", data);   
-        setChallengeData(data);
+        const res = await fetchChallenge();
+        console.log("도전 과제:", res);   
+        setChallengeData(res);
       } catch (err) {
         setError("도전과제 데이터를 불러오지 못했습니다.");
       } finally {
         setLoading(false);
       }
     };
-    fetchChallenge();
+    fetchChallengeAPI();
   }, []);
 
   useEffect(() => {
-    const fetchEndedQuest = async () => {
+    const fetchEndedQuestAPI = async () => {
       try {
-        const res = await fetch("https://h4capston.site/api/ended-quests");
-        if (!res.ok) throw new Error("서버 오류");
-        const data = await res.json();
-        console.log("종료된 퀘스트:", data);   
-        setEndedQuestData(data);
+        const res = await fetchEndedQuest();
+        console.log("종료된 퀘스트:", res);   
+        setEndedQuestData(res);
       } catch (err) {
         setError("종료된 퀘스트 데이터를 불러오지 못했습니다.");
       } finally {
         setLoading(false);
       }
     };
-    fetchEndedQuest();
+    fetchEndedQuestAPI();
   }, []);
 
 

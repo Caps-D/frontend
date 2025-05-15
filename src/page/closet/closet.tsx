@@ -14,11 +14,10 @@ import './closet.css'
 export default function Closet() {
     const [showClothes, setShowClothes] = useState<string | null>(null)
 
-    const handleDressupBtn = () => {
+    const handleDressupBtn = async() => {
         if (showClothes) {
             alert(`${showClothes} 착용 완료!`)
-            // 이후 navigate 또는 저장 로직 추가 가능
-            // 예: navigate('/next-page')
+            
         } else {
             alert("옷을 선택해주세요.")
         }
