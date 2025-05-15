@@ -244,7 +244,7 @@ const Start = () => {
 
         <div className="relative inline-block">
           {/* 원본 웹캠 영상 */}
-          <video ref={videoRef} className="w-[640px] h-[480px]  mb-2" autoPlay />
+          <video ref={videoRef} className="w-[640px] h-[480px]  mb-2 [transform:rotateY(180deg)]" autoPlay    />
           
           {/* AI 분석된 영상 표시 */}
           <img
