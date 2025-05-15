@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const apiUrl = 'http://h4capston.site/api';
+const apiUrl = 'https://h4capston.site/api';
 
 export const PostResult = async (questType:string, exerciseType:string,completedCount:number ): Promise<any> => {
   axios.defaults.withCredentials = true;
