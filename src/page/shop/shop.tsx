@@ -16,18 +16,10 @@ import Bicon3 from '../../assets/Bottom3.svg?react'
 import Bicon4 from '../../assets/Bottom4.svg?react'
 import Bicon5 from '../../assets/Bottom5.svg?react'
 import Bicon6 from '../../assets/Bottom6.svg?react'
-import { useState } from 'react'
-import './shop.css'
 
-// 옷 정보 (이미지는 제외)
-const bottoms = [
-  { id: 'bottom1', price: 30 },
-  { id: 'bottom2', price: 45 },
-  { id: 'bottom3', price: 25 },
-  { id: 'bottom4', price: 40 },
-  { id: 'bottom5', price: 35 },
-  { id: 'bottom6', price: 50 },
-]
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import './shop.css'
 
 const bottomComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   bottom1: Bottom1,
@@ -39,7 +31,7 @@ const bottomComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> 
 }
 
 const bottomIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
-  bottom1: Bicon1, 
+  bottom1: Bicon1,
   bottom2: Bicon2,
   bottom3: Bicon3,
   bottom4: Bicon4,
@@ -47,26 +39,47 @@ const bottomIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   bottom6: Bicon6,
 }
 
+type BottomItem = {
+  id: number
+  name: string
+  type: string
+  price: number
+}
+
 export default function Shop() {
+  const [bottoms, setBottoms] = useState<BottomItem[]>([])
   const [selectedBottom, setSelectedBottom] = useState<string | null>(null)
   const [userCoins, setUserCoins] = useState<number>(1000)
 
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const res = await axios.get('https://h4capston.site/api/shop')
+        const items = res.data.availableItems as BottomItem[]
+        const bottoms = items.filter(item => item.type === 'bottom')
+        setBottoms(bottoms)
+      } catch (err) {
+        console.error('아이템 데이터 로드 실패', err)
+      }
+    }
+    fetchItems()
+  }, [])
+
   const handlePurchaseBtn = () => {
     if (!selectedBottom) {
-      alert("아이템을 선택해주세요.")
+      alert('아이템을 선택해주세요.')
       return
     }
-
-    const selected = bottoms.find(b => b.id === selectedBottom)
+    const selected = bottoms.find(b => b.name === selectedBottom)
     if (!selected) return
 
     if (userCoins < selected.price) {
-      alert("코인이 부족합니다.")
+      alert('코인이 부족합니다.')
       return
     }
 
     setUserCoins(prev => prev - selected.price)
-    alert(`${selected.id} 구매 완료!`)
+    alert(`${selected.name} 구매 완료!`)
   }
 
   const handleCancelBtn = () => {
@@ -80,50 +93,42 @@ export default function Shop() {
   return (
     <div className="flex flex-col w-full h-full items-center justify-start">
       <Header>
-        <Header.Title>{`상점`}</Header.Title>
+        <Header.Title>상점</Header.Title>
         <Header.BackButton />
       </Header>
 
-      {/* 보유 코인 표시 */}
-        <div className="mt-24 mb-9 ml-72 relative w-fit h-fit">
-            <Gold className="w-full h-full" />
-             <p className="absolute top-2 left-11.5 font-['NeoDunggeunmo'] text-xl font-semibold">
-            {userCoins}
-            </p>
-        </div>
-
-      {/* 캐릭터 */}
-      <div className="relative w-[48.53%] h-[36.2%]">
-        <Woman1 className="w-full h-full" />
-        {selectedBottom && (
-          (() => {
-            const SelectedComp = bottomComponents[selectedBottom]
-            return <SelectedComp className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none" />
-          })()
-        )}
+      <div className="mt-24 mb-9 ml-72 relative w-fit h-fit">
+        <Gold className="w-full h-full" />
+        <p className="absolute top-2 left-11.5 font-['NeoDunggeunmo'] text-xl font-semibold">{userCoins}</p>
       </div>
 
-      {/* 버튼 */}
+      <div className="relative w-[48.53%] h-[36.2%]">
+        <Woman1 className="w-full h-full" />
+        {selectedBottom && bottomComponents[selectedBottom] && (() => {
+          const SelectedComp = bottomComponents[selectedBottom]
+          return <SelectedComp className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none" />
+        })()}
+      </div>
+
       <div className="flex flex-row w-full h-[5.83%] items-center justify-center mt-8 gap-3.5">
         <PurchaseBtn className="w-[29%] h-full pr-5" onClick={handlePurchaseBtn} />
         <CancelBtn className="w-[22.13%] h-full" onClick={handleCancelBtn} />
       </div>
 
-      {/* 상품 목록 */}
       <div className="flex flex-col shop w-full h-[29.1%] mt-auto">
         <div className="flex flex-row w-full h-[50%] justify-center gap-8 mt-6">
           {bottoms.slice(0, 3).map(bottom => {
-            const Comp = bottomIcons[bottom.id]
+            const Comp = bottomIcons[bottom.name]
             return (
               <button
                 key={bottom.id}
-                className={`shop-inner w-[24.53%] h-full items-center ${selectedBottom === bottom.id ? 'active' : ''}`}
-                onClick={() => handleSelectBottom(bottom.id)}
+                className={`shop-inner w-[24.53%] h-full items-center ${selectedBottom === bottom.name ? 'active' : ''}`}
+                onClick={() => handleSelectBottom(bottom.name)}
               >
                 <Comp className="w-[80%] h-[85%] mt-2" />
                 <div className="flex flex-row items-center justify-center mt-1 text-sm font-semibold">
                   <Coin className="w-5 h-5 mr-1" />
-                  <p className="font-['NeoDunggeunmo'] text-lg "> {bottom.price} </p> 
+                  <p className="font-['NeoDunggeunmo'] text-lg">{bottom.price}</p>
                 </div>
               </button>
             )
@@ -132,17 +137,17 @@ export default function Shop() {
 
         <div className="flex flex-row w-full h-[50%] justify-center gap-8 mt-3 mb-6">
           {bottoms.slice(3).map(bottom => {
-            const Comp = bottomIcons[bottom.id]
+            const Comp = bottomIcons[bottom.name]
             return (
               <button
                 key={bottom.id}
-                className={`shop-inner w-[24.53%] h-full items-center ${selectedBottom === bottom.id ? 'active' : ''}`}
-                onClick={() => handleSelectBottom(bottom.id)}
+                className={`shop-inner w-[24.53%] h-full items-center ${selectedBottom === bottom.name ? 'active' : ''}`}
+                onClick={() => handleSelectBottom(bottom.name)}
               >
                 <Comp className="w-[80%] h-[85%] mt-2" />
                 <div className="flex flex-row items-center justify-center mt-1 text-sm font-semibold">
                   <Coin className="flex w-5 h-5 mr-1" />
-                  <p className="font-['NeoDunggeunmo'] text-lg"> {bottom.price} </p> 
+                  <p className="font-['NeoDunggeunmo'] text-lg">{bottom.price}</p>
                 </div>
               </button>
             )

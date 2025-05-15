@@ -9,6 +9,7 @@ import { useMode } from "../../context/ExerciseContext"; // Context Hook import
 
 function Main () {
 
+
     const { state, setState } = useMode();
 
     const [ mainData, setMainData] = useState<mainData>({
@@ -187,7 +188,6 @@ function Main () {
     )}
   </div>
 </div>
-
         <CommonBtn status={1} text="운동 시작하기" onClick={()=>navigate('/select/mode')} hasNav={true}></CommonBtn>
         <BottomNav activeIndex={1}></BottomNav>
         
