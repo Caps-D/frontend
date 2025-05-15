@@ -8,12 +8,33 @@ import Outer3 from '../../assets/top3.svg?react'
 import Outer4 from '../../assets/top4.svg?react'
 import Outer5 from '../../assets/top5.svg?react'
 import Outer6 from '../../assets/top6.svg?react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { GetCloset } from '../../api/closet/getCloset'
 import './closet.css'
 
 export default function Closet() {
     const [showClothes, setShowClothes] = useState<string | null>(null)
+    const [clothesData, setClothesData] = useState<any[]>([])
+    const [loading, setLoading] = useState(true)
 
+    useEffect(() => {
+        const fetchClosetData = async() =>{
+            try{
+                const response = await GetCloset();
+                console.log(response.data.items);
+                setClothesData(response.data.items);
+
+            }catch (error) {
+                console.error("옷장 데이터 가져오기 실패", error);
+                alert("옷장 데이터를 가져오는 데 실패했습니다.");
+            }finally {
+                setLoading(false);
+            }
+            
+         };
+        fetchClosetData();
+   }, [])
+        
     const handleDressupBtn = async() => {
         if (showClothes) {
             alert(`${showClothes} 착용 완료!`)

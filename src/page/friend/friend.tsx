@@ -8,6 +8,7 @@ import Level from "../../assets/Level.svg?react";
 import DeleteBtn from "../../assets/DeleteBtn.svg?react";
 import DeleteFriendBtn from "../../assets/DeleteFriendBtn.svg?react";
 import { useNavigate } from "react-router-dom";
+import { GetFriends } from "../../api/friend/getFriends";
 
 export default function Friend() {
 
@@ -24,24 +25,22 @@ export default function Friend() {
   const [error, setError] = useState<string | null>(null);
 
   // Fetch friends data from API
-  useEffect(() => {
-    const fetchFriends = async () => {
-      try {
-        const response = await fetch("https://h4capston.site/api/friends");
-        if (!response.ok) {
-          throw new Error("Failed to fetch friends");
-        }
-        const data = await response.json();
-        setFriends(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+ useEffect(() => {
+  const fetchFriends = async () => {
+    try {
+      const response = await GetFriends();
+      // friends가 배열이 아닐 경우 빈 배열로 대체
+      setFriends(Array.isArray(response?.friends) ? response.friends : []);
+    } catch (err: any) {
+      setError(err.message);
+      setFriends([]); // 에러 시에도 빈 배열로 초기화
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchFriends();
-  }, []);
+  fetchFriends();
+}, []);
 
   const handleDelete = (nickname: string) => {
     setFriends(prev => prev.filter(friend => friend.nickname !== nickname));
@@ -82,7 +81,7 @@ export default function Friend() {
             <div>Loading...</div>
           ) : error ? (
             <div>Error: {error}</div>
-          ) : (
+          ) : friends?(<div className="font-['NeoDunggeunmo'] ">친구 목록이 비어있습니다</div>): (
             <div className="flex flex-col w-full h-full">
               {filteredFriends.map(friend => {
                 const isDeleting = selectedForDelete === friend.nickname;
