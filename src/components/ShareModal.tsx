@@ -22,7 +22,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, imageUrl, onSh
           )}
         </div>
         <div className="flex justify-around w-full mt-2">
-          <KakaoShareButton />
+          <KakaoShareButton imageUrl={imageUrl} />
         </div>
         <button
           className="mt-4 text-sm text-gray-500 underline"
