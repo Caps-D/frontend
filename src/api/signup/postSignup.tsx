@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const apiUrl = 'http://h4capston.site/api';
+const apiUrl = 'https://h4capston.site/api';
 
 export const PostSignup = async (gender:string, nickname:string): Promise<any> => {
   axios.defaults.withCredentials = true;
