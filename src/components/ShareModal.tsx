@@ -1,4 +1,5 @@
 import React from "react";
+import KakaoShareButton from "./KakaoShareButton";
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -21,15 +22,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, imageUrl, onSh
           )}
         </div>
         <div className="flex justify-around w-full mt-2">
-          <button onClick={() => onShare("kakao")}>
-            <img src="/images/kakaoS.svg" alt="카카오톡" className="w-10" />
-          </button>
-          <button onClick={() => onShare("naver")}>
-            <img src="/images/naverS.svg" alt="네이버블로그" className="w-10" />
-          </button>
-          <button onClick={() => onShare("instagram")}>
-            <img src="/images/InstagramS.svg" alt="인스타그램" className="w-10" />
-          </button>
+          <KakaoShareButton />
         </div>
         <button
           className="mt-4 text-sm text-gray-500 underline"
