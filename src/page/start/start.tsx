@@ -238,18 +238,18 @@ const Start = () => {
           {squatCount} / {state.exerciseCount}
         </div>
 
-        <div className="mt-[15px] flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[48px] leading-[48px] text-[#338C00] mb-[30px]">
+        <div className=" flex w-[100%] justify-center font-['NeoDunggeunmo'] text-[48px] leading-[48px] text-[#338C00] mb-[30px]">
           {status}
         </div>
 
         <div className="relative inline-block">
           {/* 원본 웹캠 영상 */}
-          <video ref={videoRef} className="w-[640px] h-[480px]  mb-2" autoPlay />
+          <video ref={videoRef} className="w-[640px] h-[100%] [transform:rotateY(180deg)]" autoPlay    />
           
           {/* AI 분석된 영상 표시 */}
           <img
             ref={processedImageRef}
-            className="absolute top-0 left-0 w-[640px] h-[480px]"
+            className="absolute top-0 left-0 w-[640px] h-[100%]"
           />
 
           {/* 경고 메시지 오버레이 */}
