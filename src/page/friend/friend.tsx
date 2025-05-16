@@ -12,41 +12,54 @@ import { GetFriends } from "../../api/friend/getFriends";
 import { PostSearchUser } from "../../api/friend/postSearchUser";
 
 export default function Friend() {
-
   interface Friend {
-  nickname: string;
-  level: number;
-}
+    nickname: string;
+    level: number;
+  }
 
   const [friends, setFriends] = useState<Friend[]>([]);
-  const navigate = useNavigate();
+  const [searchResults, setSearchResults] = useState<Friend[]>([]);
   const [searchText, setSearchText] = useState("");
   const [selectedForDelete, setSelectedForDelete] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searching, setSearching] = useState(false);
 
-  // Fetch friends data from API
- useEffect(() => {
-  const fetchFriends = async () => {
-    try {
-      const response = await GetFriends();
-      // friends가 배열이 아닐 경우 빈 배열로 대체
-      setFriends(Array.isArray(response?.friends) ? response.friends : []);
-    } catch (err: any) {
-      setError(err.message);
-      setFriends([]); // 에러 시에도 빈 배열로 초기화
-    } finally {
-      setLoading(false);
-    }
-  };
+  const navigate = useNavigate();
 
-  fetchFriends();
-}, []);
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const response = await GetFriends();
+        setFriends(Array.isArray(response?.friends) ? response.friends : []);
+      } catch (err: any) {
+        setError(err.message);
+        setFriends([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-
+    fetchFriends();
+  }, []);
 
   const handleDelete = (nickname: string) => {
     setFriends(prev => prev.filter(friend => friend.nickname !== nickname));
+  };
+
+  const handleSearch = async () => {
+    if (!searchText) return;
+    setSearching(true);
+    try {
+      const response = await PostSearchUser(searchText);
+      const resultData = Array.isArray(response?.data?.users) ? response.data.users : [];
+      setSearchResults(resultData);
+    } catch (error) {
+      console.error("검색 실패:", error);
+      setSearchResults([]);
+    } finally {
+      setSearching(false);
+    }
   };
 
   const filteredFriends = friends.filter(friend =>
@@ -69,9 +82,15 @@ export default function Friend() {
               placeholder="친구 닉네임을 검색하세요."
               value={searchText}
               onChange={e => setSearchText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSearch();
+              }}
               className="font-['NeoDunggeunmo'] text-lg w-full h-full bg-[#D9D9D9] border border-[#000000] rounded-[30px] p-3 pl-10"
             />
-            <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 w-8 h-8" />
+            <Search
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 cursor-pointer"
+              onClick={handleSearch}
+            />
           </div>
 
           {/* 친구추가 버튼 */}
@@ -84,7 +103,9 @@ export default function Friend() {
             <div>Loading...</div>
           ) : error ? (
             <div>Error: {error}</div>
-          ) : friends?(<div className="font-['NeoDunggeunmo'] ">친구 목록이 비어있습니다</div>): (
+          ) : friends.length === 0 ? (
+            <div className="font-['NeoDunggeunmo']">친구 목록이 비어있습니다</div>
+          ) : (
             <div className="flex flex-col w-full h-full">
               {filteredFriends.map(friend => {
                 const isDeleting = selectedForDelete === friend.nickname;
@@ -124,6 +145,32 @@ export default function Friend() {
                 );
               })}
               <div className="w-[95%] h-0 border border-[#D9D9D9]"></div>
+            </div>
+          )}
+
+          {/* 검색 결과 */}
+          {searching ? (
+            <div className="mt-4 text-lg font-['NeoDunggeunmo']">검색 중...</div>
+          ) : searchResults.length > 0 && (
+            <div className="mt-6 w-full px-4">
+              <div className="text-lg font-['NeoDunggeunmo'] mb-2">검색 결과</div>
+              {searchResults.map(user => (
+                <div
+                  key={user.nickname}
+                  className="flex items-center justify-between px-4 py-2 border border-gray-300 rounded mb-2"
+                >
+                  <div className="flex items-center text-lg font-['NeoDunggeunmo']">
+                    {user.nickname}
+                    <div className="relative ml-2 w-8 h-8">
+                      <Level className="w-full h-full" />
+                      <span className="absolute inset-0 flex items-center justify-center text-white text-xl font-normal mt-1.5">
+                        {user.level}
+                      </span>
+                    </div>
+                  </div>
+                  {/* 향후 친구 추가 버튼 위치 */}
+                </div>
+              ))}
             </div>
           )}
         </div>
