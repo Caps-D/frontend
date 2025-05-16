@@ -232,8 +232,8 @@ export default function Quest() {
                           <p className="font-['NeoDunggeunmo'] text-2xl mt-2 mb-5">보상</p>
                           <div className="flex flex-col">
                             <div className="flex flex-row">
-                              <Coin className="w-7 h-7 mr-2" />
-                              <p className="font-['NeoDunggeunmo'] text-2xl">{challenge.reward}</p>
+                              <Coin className="w-6 h-6 mr-2" />
+                              <p className="font-['NeoDunggeunmo'] text-[21px]">{challenge.reward}</p>
                             </div>
                           </div>
                         </div>

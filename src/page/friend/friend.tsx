@@ -9,6 +9,7 @@ import DeleteBtn from "../../assets/DeleteBtn.svg?react";
 import DeleteFriendBtn from "../../assets/DeleteFriendBtn.svg?react";
 import { useNavigate } from "react-router-dom";
 import { GetFriends } from "../../api/friend/getFriends";
+import { PostSearchUser } from "../../api/friend/postSearchUser";
 
 export default function Friend() {
 
@@ -41,6 +42,8 @@ export default function Friend() {
 
   fetchFriends();
 }, []);
+
+
 
   const handleDelete = (nickname: string) => {
     setFriends(prev => prev.filter(friend => friend.nickname !== nickname));

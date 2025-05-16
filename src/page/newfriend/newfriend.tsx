@@ -1,40 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../components/header";
 import DefaultBody from "../../components/defaultBody";
 import BottomNav from "../../components/bottomNav";
 import Search from "../../assets/Search.svg?react";
 import Level from "../../assets/Level.svg?react";
 import AddFriendBtn from "../../assets/AddFriendBtn.svg?react";
-import axios from "axios";
+import { PostSearchUser } from "../../api/friend/postSearchUser"; // ✅ 닉네임 검색 API
+import { PostAddFriend } from "../../api/newfriend/postAddFriend"; // ✅ 친구 추가 API
 
-const dummyData = [
-  { nickname: "나는 고수다", level: 10 }
-];
+interface Friend {
+  nickname: string;
+  level: number;
+}
 
 export default function NewFriend() {
   const [searchText, setSearchText] = useState("");
-  const [friendList] = useState(dummyData);
+  const [filteredFriends, setFilteredFriends] = useState<Friend[]>([]);
   const [addedFriends, setAddedFriends] = useState<string[]>([]);
 
-  const filteredFriends = friendList.filter(friend =>
-    friend.nickname.includes(searchText)
-  );
+  // ✅ 검색어 입력 시 서버에 검색 요청
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (!searchText.trim()) {
+        setFilteredFriends([]);
+        return;
+      }
 
+      try {
+        const res = await PostSearchUser(searchText);
+        setFilteredFriends(res.data); // [{ nickname, level }]
+      } catch (err) {
+        console.error("검색 실패", err);
+        setFilteredFriends([]);
+      }
+    };
+
+    fetchSearchResults();
+  }, [searchText]);
+
+  // ✅ 친구 추가 함수
   const handleAddFriend = async (nickname: string) => {
     try {
-      const response = await axios.post("https://h4capston.site/api/addFriend", {
-        nickname
-      });
-
-      if (response.status === 200 || response.status === 201) {
-        alert("친구가 성공적으로 추가되었습니다.");
-        setAddedFriends(prev => [...prev, nickname]);
-      } else {
-        alert("친구 추가에 실패했습니다.");
-      }
+      const res = await PostAddFriend(nickname);
+      alert(`${nickname} 님이 친구로 추가되었습니다.`);
+      setAddedFriends((prev) => [...prev, nickname]);
     } catch (error) {
+      alert("친구 추가 실패: 이미 추가된 사용자이거나 오류가 발생했습니다.");
       console.error("친구 추가 오류:", error);
-      alert("서버 오류로 친구를 추가할 수 없습니다.");
     }
   };
 
@@ -47,7 +59,7 @@ export default function NewFriend() {
 
       <DefaultBody hasHeader={1}>
         <div className="flex flex-col items-center">
-          {/* 검색창 */}
+          {/* 🔍 검색창 */}
           <div className="flex flex-row w-[70%] relative">
             <input
               type="text"
@@ -59,10 +71,10 @@ export default function NewFriend() {
             <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 w-8 h-8" />
           </div>
 
-          {/* 친구목록 */}
-          {searchText && (
+          {/* 👥 검색 결과 리스트 */}
+          {filteredFriends.length > 0 && (
             <div className="flex flex-col w-full h-full mt-8">
-              {filteredFriends.map(friend => (
+              {filteredFriends.map((friend) => (
                 <div key={friend.nickname}>
                   <div className="w-[95%] h-0 border border-[#D9D9D9]"></div>
                   <div className="flex flex-row p-3">
@@ -99,4 +111,3 @@ export default function NewFriend() {
     </div>
   );
 }
-
