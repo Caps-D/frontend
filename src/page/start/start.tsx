@@ -23,14 +23,14 @@ const Start = () => {
   // 운동 종류에 따라 서버 주소를 반환
   const getWebSocketUrl = () => {
     if (state.exerciseType === '스쿼트') {
-      return 'wss://h4capston.site/squat/ws';
+      return 'wss://h4capston.site/squat/wss';
     } else if (state.exerciseType === '팔굽혀펴기') {
-      return 'wss://h4capston.site/pushup/ws';
+      return 'wss://h4capston.site/pushup/wss';
     } else if (state.exerciseType === '플랭크') {
-      return 'wss://h4capston.site/plank/ws';
+      return 'wss://h4capston.site/plank/wss';
     } else {
       // 기본값 혹은 에러 처리
-      return 'wss://h4capston.site/squat/ws';
+      return 'wss://h4capston.site/squat/wss';
     }
   };
 
@@ -54,25 +54,22 @@ const Start = () => {
     };
   }, []);
 
-  useEffect(() => {
-  // 목표 세트가 달성되면 handlePostResult 실행
-  if (squatCount >= state.exerciseCount * state.exerciseSet) {
-    (async () => {
-      try {
-        const response = await PostResult(state.mode, state.exerciseType, state.exerciseCount * state.exerciseSet);
-        console.log(`회원가입 결과: ${response}`);
-        const code = response.status;
-        // 결과에 따라 /main으로 이동
-        navigate('/main');
-      } catch (error) {
-        console.error("회원가입 실패", error);
-        alert(error);
-      } finally {
-        websocketRef.current?.close();
-      }
-    })();
-  }
-}, [squatCount, state.exerciseCount, state.exerciseSet, state.mode, state.exerciseType, navigate]);
+  // useEffect(() => {
+//   // 목표 세트가 달성되면 handlePostResult 실행
+//   if (squatCount >= state.exerciseCount * state.exerciseSet) {
+//     (async () => {
+//       try {
+//         const response = await PostResult(state.mode, state.exerciseType, state.exerciseCount * state.exerciseSet);
+//         console.log(response);
+//       } catch (error) {
+//         console.error("회원가입 실패", error);
+//         alert(error);
+//       } finally {
+//         websocketRef.current?.close();
+//       }
+//     })();
+//   }
+// }, [squatCount, state.exerciseCount, state.exerciseSet, state.mode, state.exerciseType, navigate]);
   const startWebcam = async () => {
     try {
       console.log('🔍 웹캠 요청 중...');
@@ -133,6 +130,17 @@ const Start = () => {
 
         // 목표 세트 달성 시 /result로 이동
         if (newTargetCheck >= state.exerciseSet) {
+           (async () => {
+      try {
+        const response = await PostResult(state.mode, state.exerciseType, state.exerciseCount * state.exerciseSet);
+        console.log(response);
+      } catch (error) {
+        console.error("회원가입 실패", error);
+        alert(error);
+      } finally {
+        websocketRef.current?.close();
+      }
+    })();
           navigate('/result');
         }
 
