@@ -23,14 +23,14 @@ const Start = () => {
   // 운동 종류에 따라 서버 주소를 반환
   const getWebSocketUrl = () => {
     if (state.exerciseType === '스쿼트') {
-      return 'ws://43.200.67.149:5001/ws';
+      return 'wss://h4capston.site:5001/wss';
     } else if (state.exerciseType === '팔굽혀펴기') {
-      return 'ws://43.200.67.149:5002/ws';
+      return 'wss://h4capston.site:5002/wss';
     } else if (state.exerciseType === '플랭크') {
-      return 'ws://43.200.67.149:5003/ws';
+      return 'wss://h4capston.site:5003/wss';
     } else {
       // 기본값 혹은 에러 처리
-      return 'ws://43.200.67.149:5001/ws';
+      return 'wss://h4capston.site/:5001/wss';
     }
   };
 
