@@ -87,7 +87,7 @@ function Result() {
             ref={resultRef}
             className="flex justify-center w-full flex-col pt-[10%] pl-[32px]">
             <img  src={`/images/${state.exerciseType}.svg`}
-                className="w-[154px] mt-[5%]"></img>
+                className="w-[104px] mt-[5%]"></img>
             <p className="mt-[20px] font-[NeoDunggeunmo] font-normal text-[22px] leading-[20px] text-black">{state.exerciseType}</p>
 
         <div className="flex flex-row items-baseline mt-[20px]">
