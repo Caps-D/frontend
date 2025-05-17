@@ -115,6 +115,7 @@ const Start = () => {
             overlayWarningRef.current.style.display = response.message ? 'block' : 'none';
           }
 
+
           // squatCount 업데이트
       if (response.squat_count !== undefined) {
         let newSquatCount = response.squat_count;
@@ -260,7 +261,7 @@ const Start = () => {
 
         <div className="relative inline-block">
           {/* 원본 웹캠 영상 */}
-          <video ref={videoRef} className="w-[640px] h-[100%] [transform:rotateY(180deg)]" autoPlay  muted playsInline  />
+          <video ref={videoRef} className="w-[640px] h-[100%] [transform:rotateY(180deg)]" autoPlay playsInline  />
           
           {/* AI 분석된 영상 표시 */}
           <img
