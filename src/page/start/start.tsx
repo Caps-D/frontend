@@ -25,9 +25,9 @@ const Start = () => {
     if (state.exerciseType === '스쿼트') {
       return 'wss://h4capston.site/squat/wss';
     } else if (state.exerciseType === '팔굽혀펴기') {
-      return 'wss://h4capston.site/pushup/wss';
+      return 'wss://h4capston.site/pushup/ws';
     } else if (state.exerciseType === '플랭크') {
-      return 'wss://h4capston.site/plank/wss';
+      return 'wss://h4capston.site/plank/ws';
     } else {
       // 기본값 혹은 에러 처리
       return 'wss://h4capston.site/squat/wss';
@@ -128,21 +128,28 @@ const Start = () => {
         setSquatCount(newSquatCount);
         setTargetCheck(newTargetCheck);
 
-        // 목표 세트 달성 시 /result로 이동
-        if (newTargetCheck >= state.exerciseSet) {
-           (async () => {
-      try {
-        const response = await PostResult(state.mode, state.exerciseType, state.exerciseCount * state.exerciseSet);
-        console.log(response);
-      } catch (error) {
-        console.error("회원가입 실패", error);
-        alert(error);
-      } finally {
-        websocketRef.current?.close();
-      }
-    })();
+    if (newTargetCheck >= state.exerciseSet) {
+  (async () => {
+    try {
+      const response = await PostResult(state.mode, state.exerciseType, state.exerciseCount * state.exerciseSet);
+      console.log(response);
+    } catch (error) {
+      console.error("회원가입 실패", error);
+      alert(error);
+    } finally {
+      // 웹소켓 close 후 이동
+      if (websocketRef.current) {
+        websocketRef.current.onclose = () => {
           navigate('/result');
-        }
+        };
+        websocketRef.current.close();
+      } else {
+        navigate('/result');
+      }
+    }
+  })();
+}
+
 
         setStatus(response.status === 'success' ? 'success' : 'failure');
       }
