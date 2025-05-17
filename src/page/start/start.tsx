@@ -76,6 +76,7 @@ const Start = () => {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+         videoRef.current.play();
       }
       console.log('웹캠 활성화 완료');
     } catch (error) {
@@ -259,7 +260,7 @@ const Start = () => {
 
         <div className="relative inline-block">
           {/* 원본 웹캠 영상 */}
-          <video ref={videoRef} className="w-[640px] h-[100%] [transform:rotateY(180deg)]" autoPlay    />
+          <video ref={videoRef} className="w-[640px] h-[100%] [transform:rotateY(180deg)]" autoPlay  muted playsInline  />
           
           {/* AI 분석된 영상 표시 */}
           <img
