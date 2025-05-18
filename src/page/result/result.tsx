@@ -1,5 +1,5 @@
 import CommonBtn from "../../components/commonBtn";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../components/header";
 import DefaultBody from "../../components/defaultBody";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,8 @@ import { useMode } from "../../context/ExerciseContext"; // Context Hook import
 import { useRef } from "react";
 import html2canvas from "html2canvas";
 import ShareModal from "../../components/ShareModal"; // 경로 맞게
+import { GetResult } from "../../api/result/getresult"; // 경로 맞게
+
 
 function Result() {
   const navigate = useNavigate();
@@ -17,10 +19,27 @@ function Result() {
   const resultRef = useRef<HTMLDivElement>(null);
   // Context에서 상태와 setState 가져오기
   const { state, setState } = useMode();
-  const total = 60;
-  const quest = 2;
+  const [total, setTotal] = useState<number>(0);
+  const [quest, setQuest] = useState<number>(0);
 
   const count = state.exerciseCount * state.exerciseSet;
+  
+  useEffect(() => {
+    const getInfo = async () => {
+      try { 
+        const result = await GetResult();
+        console.log(result.data);
+        setTotal(result.data.todayTotalExerciseCount);
+        setQuest(result.data.remainingDailySets);
+      } catch (error) {
+        console.log("결과 정보를 불러오지 못했습니다.", error);
+      }
+    };
+    getInfo();
+  }
+  , []);
+
+
   const handleShare = (platform: string) => {
     if (!imageUrl) return;
     if (platform === "kakao") {
