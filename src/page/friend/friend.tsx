@@ -10,6 +10,8 @@ import DeleteFriendBtn from "../../assets/DeleteFriendBtn.svg?react";
 import { useNavigate } from "react-router-dom";
 import { GetFriends } from "../../api/friend/getFriends";
 import { PostSearchUser } from "../../api/friend/postSearchUser";
+import { deleteFriend } from "../../api/friend/deleteFriend"; // 친구 삭제 API 함수 import
+import { useLocation } from "react-router-dom";
 
 export default function Friend() {
   interface Friend {
@@ -26,12 +28,14 @@ export default function Friend() {
   const [searching, setSearching] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchFriends = async () => {
       try {
         const response = await GetFriends();
-        setFriends(Array.isArray(response?.friends) ? response.friends : []);
+        console.log("GetFriends 응답:", response);
+        setFriends(Array.isArray(response) ? response : []);
       } catch (err: any) {
         setError(err.message);
         setFriends([]);
@@ -41,10 +45,27 @@ export default function Friend() {
     };
 
     fetchFriends();
-  }, []);
+  }, [location]);
 
-  const handleDelete = (nickname: string) => {
-    setFriends(prev => prev.filter(friend => friend.nickname !== nickname));
+  // 친구 삭제 함수 (API 연동)
+  const handleDelete = async (nickname: string) => {
+    const confirmDelete = confirm(`${nickname}님을 정말 삭제하시겠습니까?`);
+    if (!confirmDelete) {
+      setSelectedForDelete(null);
+      return;
+    }
+
+    try {
+      await deleteFriend(nickname);
+      // 삭제 성공 시 친구 목록에서 제외
+      setFriends(prev => prev.filter(friend => friend.nickname !== nickname));
+      alert(`${nickname}님이 친구 목록에서 삭제되었습니다.`);
+    } catch (error) {
+      alert("친구 삭제에 실패했습니다. 다시 시도해주세요.");
+      console.error("친구 삭제 실패:", error);
+    } finally {
+      setSelectedForDelete(null);
+    }
   };
 
   const handleSearch = async () => {
@@ -62,9 +83,9 @@ export default function Friend() {
     }
   };
 
-  const filteredFriends = friends.filter(friend =>
-    friend.nickname.includes(searchText)
-  );
+  const filteredFriends = searchText
+    ? friends.filter(friend => friend.nickname.includes(searchText))
+    : friends;
 
   return (
     <div className="flex flex-col w-full h-full items-center justify-start">
@@ -103,8 +124,10 @@ export default function Friend() {
             <div>Loading...</div>
           ) : error ? (
             <div>Error: {error}</div>
-          ) : friends.length === 0 ? (
-            <div className="font-['NeoDunggeunmo']">친구 목록이 비어있습니다</div>
+          ) : filteredFriends.length === 0 ? (
+            <div className="font-['NeoDunggeunmo']">
+              {searchText ? "검색 결과가 없습니다" : "친구 목록이 비어있습니다"}
+            </div>
           ) : (
             <div className="flex flex-col w-full h-full">
               {filteredFriends.map(friend => {
@@ -112,7 +135,7 @@ export default function Friend() {
 
                 return (
                   <div key={friend.nickname}>
-                    <div className="w-[95%] h-0 border border-[#D9D9D9]"></div>
+                    <div className="w-[95%] h-0 border-[0.5px] border-[#D9D9D9]"></div>
                     <div className="flex flex-row p-3">
                       <div className="flex mr-auto text-2xl text-shadow-md font-normal font-['NeoDunggeunmo']">
                         {friend.nickname}
@@ -125,16 +148,8 @@ export default function Friend() {
                       </div>
                       <div className="flex ml-auto mr-4 items-center justify-center">
                         {isDeleting ? (
-                          <DeleteFriendBtn 
-                            onClick={() => {
-                              const confirmDelete = confirm("정말 삭제하시겠습니까?");
-                              if (confirmDelete) {
-                                handleDelete(friend.nickname);
-                                setSelectedForDelete(null);
-                              } else {
-                                setSelectedForDelete(null);
-                              }
-                            }}
+                          <DeleteFriendBtn
+                            onClick={() => handleDelete(friend.nickname)}
                           />
                         ) : (
                           <DeleteBtn onClick={() => setSelectedForDelete(friend.nickname)} />
@@ -144,11 +159,11 @@ export default function Friend() {
                   </div>
                 );
               })}
-              <div className="w-[95%] h-0 border border-[#D9D9D9]"></div>
+              <div className="w-[95%] h-0 border-[0.5px] border-[#D9D9D9]"></div>
             </div>
           )}
 
-          {/* 검색 결과 */}
+          {/* 검색 결과 (친구 목록이 아닌 유저 검색 결과) */}
           {searching ? (
             <div className="mt-4 text-lg font-['NeoDunggeunmo']">검색 중...</div>
           ) : searchResults.length > 0 && (
@@ -168,7 +183,7 @@ export default function Friend() {
                       </span>
                     </div>
                   </div>
-                  {/* 향후 친구 추가 버튼 위치 */}
+                  {/* 친구 추가 버튼 자리 */}
                 </div>
               ))}
             </div>
