@@ -2,25 +2,26 @@ import axios, { AxiosResponse } from "axios";
 
 const apiUrl = 'https://h4capston.site/api';
 
-export const GetFriends = async ( ): Promise<any> => {
+export const PostSearchUser = async (nickname:string|null): Promise<any> => {
   axios.defaults.withCredentials = true;
   try {
-    const response: AxiosResponse<any> = await axios.get(
-      `${apiUrl}/friends`,
+    const response: AxiosResponse<any> = await axios.post(
+      `${apiUrl}/search-user`,
+      { "nickname": nickname },
       {
         withCredentials: true,
       }
     );
 
-    console.log("📥 친구 목록 응답:", response.data.friends);
-    return response.data.friends;
+    console.log(response.data);
+    return response;
   } catch (error: any) {
     if (error.response) {
       const { status, data } = error.response;
       console.error("Error response:", status, data);
-      if (status === 401) {
-        console.error("401 Unauthorized: 토큰이 유효하지 않거나 만료되었습니다.");
-        alert("로그인 세션이 만료되었습니다. 다시 로그인 해주세요.");
+    //   if (status === 401) {
+    //     console.error("401 Unauthorized: 토큰이 유효하지 않거나 만료되었습니다.");
+    
     //     if (retryCount < 2) {
     //         console.log(`🔄 재시도 중... (${retryCount + 1}/2)`);
             
@@ -38,8 +39,8 @@ export const GetFriends = async ( ): Promise<any> => {
     //     }
     
     //     console.error("❌ 2번 재시도 후에도 실패. 로그인 페이지로 이동합니다.");
-       window.location.href = "/";
-     }
+    //     window.location.href = "/login";
+    // }
     } else if (error.request) {
       console.error("No response received:", error.request);
     } else {

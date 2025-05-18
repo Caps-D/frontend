@@ -2,18 +2,19 @@ import axios, { AxiosResponse } from "axios";
 
 const apiUrl = 'https://h4capston.site/api';
 
-export const GetFriends = async ( ): Promise<any> => {
+export const deleteFriend = async (friendNickname: string ): Promise<any> => {
   axios.defaults.withCredentials = true;
   try {
-    const response: AxiosResponse<any> = await axios.get(
-      `${apiUrl}/friends`,
+    const response: AxiosResponse<any> = await axios.delete(
+      `${apiUrl}/removeFriend`,
       {
+        data: { friendNickname }, // DELETE 요청 시 body 전달
         withCredentials: true,
       }
     );
 
-    console.log("📥 친구 목록 응답:", response.data.friends);
-    return response.data.friends;
+    console.log("📥 친구 삭제 응답:", response.data);
+    return response.data;
   } catch (error: any) {
     if (error.response) {
       const { status, data } = error.response;
