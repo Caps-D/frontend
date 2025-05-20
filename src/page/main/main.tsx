@@ -87,8 +87,18 @@ function Main () {
       const checkMarks = generateCheckMarks(mainData.targetSet, mainData.targetCheck);
       const lv_progress = mainData.level % 100 + 5;
 
-
+      const pantsRaw = mainData.character.pants;
       const cleanResponse = mainData.character.top?.replace(/\[|\]/g, "");
+      let pantsFileNum = null;
+
+        if (pantsRaw) {
+          // 1. 숫자만 추출
+          const match = pantsRaw.match(/\[(\d+)\]/);
+          if (match) {
+            // 2. 번호 변환: 예시로 7 → 1로 맞추려면 -6
+            pantsFileNum = Number(match[1]) - 6;
+          }
+        }
   
   return (
     <div className="flex flex-col items-center justify-start w-full h-full">
@@ -184,7 +194,7 @@ function Main () {
 
     {mainData.character.pants && (
       <img
-        src={`/src/assets/${mainData.character.pants}.svg`}
+        src={`/src/assets/pants${pantsFileNum}.svg`}
         className="absolute top-0 z-0 w-full h-full object-contain pointer-events-none"
         alt="하의"
       />
