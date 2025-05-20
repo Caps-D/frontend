@@ -193,7 +193,7 @@ export default function Quest() {
                     </div>
                   );
                 })}
-              <ExerciseBtn className="mt-11" onClick={() => navigate("/start")} />
+              <ExerciseBtn className="mt-11" onClick={() => navigate("/select/mode")} />
             </div>
           )}
 
@@ -241,7 +241,7 @@ export default function Quest() {
                     </div>
                   );
                 })}
-              <ExerciseBtn className="mt-11" onClick={() => navigate("/start")} />
+              <ExerciseBtn className="mt-11" onClick={() => navigate("/select/mode")} />
               <BottomNav />
             </div>
           )}
