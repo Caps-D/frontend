@@ -10,7 +10,7 @@ import DeleteFriendBtn from "../../assets/DeleteFriendBtn.svg?react";
 import { useNavigate } from "react-router-dom";
 import { GetFriends } from "../../api/friend/getFriends";
 import { PostSearchUser } from "../../api/friend/postSearchUser";
-import { deleteFriend } from "../../api/friend/deleteFriend"; // 친구 삭제 API 함수 import
+import { deleteFriend } from "../../api/friend/deleteFriend"; 
 import { useLocation } from "react-router-dom";
 
 export default function Friend() {
@@ -183,7 +183,6 @@ export default function Friend() {
                       </span>
                     </div>
                   </div>
-                  {/* 친구 추가 버튼 자리 */}
                 </div>
               ))}
             </div>

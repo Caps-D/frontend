@@ -18,7 +18,9 @@ import Bicon5 from '../../assets/Bottom5.svg?react'
 import Bicon6 from '../../assets/Bottom6.svg?react'
 
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { GetShop } from '../../api/shop/getShop'
+import { GetShopCoin } from '../../api/shop/getShopCoin'
+import { PostBuy } from '../../api/shop/postBuy' // 구매 API 임포트
 import './shop.css'
 
 const bottomComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
@@ -49,23 +51,25 @@ type BottomItem = {
 export default function Shop() {
   const [bottoms, setBottoms] = useState<BottomItem[]>([])
   const [selectedBottom, setSelectedBottom] = useState<string | null>(null)
-  const [userCoins, setUserCoins] = useState<number>(1000)
+  const [userCoins, setUserCoins] = useState<number>(0)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get('https://h4capston.site/api/shop')
-        const items = res.data.availableItems as BottomItem[]
+        const [items, coins] = await Promise.all([GetShop(), GetShopCoin()])
         const bottoms = items.filter(item => item.type === 'bottom')
         setBottoms(bottoms)
+        setUserCoins(coins)
       } catch (err) {
-        console.error('아이템 데이터 로드 실패', err)
+        console.error('상점 데이터 로딩 실패', err)
       }
     }
-    fetchItems()
+
+    fetchData()
   }, [])
 
-  const handlePurchaseBtn = () => {
+  const handlePurchaseBtn = async () => {
     if (!selectedBottom) {
       alert('아이템을 선택해주세요.')
       return
@@ -78,8 +82,21 @@ export default function Shop() {
       return
     }
 
-    setUserCoins(prev => prev - selected.price)
-    alert(`${selected.name} 구매 완료!`)
+    try {
+      setLoading(true)
+      const res = await PostBuy(selected.id) // itemId를 인자로 넘김
+      if (res.success) {
+        setUserCoins(res.remainingCoins) // 서버에서 받은 코인 잔액 업데이트
+        alert(res.message)
+        setSelectedBottom(null) // 구매 후 선택 초기화
+      } else {
+        alert(res.error || '구매 실패')
+      }
+    } catch (err) {
+      console.error('구매 실패', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleCancelBtn = () => {
@@ -99,19 +116,22 @@ export default function Shop() {
 
       <div className="mt-24 mb-9 ml-72 relative w-fit h-fit">
         <Gold className="w-full h-full" />
-        <p className="absolute top-2 left-11.5 font-['NeoDunggeunmo'] text-xl font-semibold">{userCoins}</p>
+        <p className="absolute top-2 left-12 font-['NeoDunggeunmo'] text-xl font-semibold">{userCoins}</p>
       </div>
 
       <div className="relative w-[48.53%] h-[36.2%]">
         <Woman1 className="w-full h-full" />
         {selectedBottom && bottomComponents[selectedBottom] && (() => {
           const SelectedComp = bottomComponents[selectedBottom]
-          return <SelectedComp className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none" />
+          return <SelectedComp className="absolute top-0 left-1 w-full z-1 h-full object-contain pointer-events-none" />
         })()}
       </div>
 
       <div className="flex flex-row w-full h-[5.83%] items-center justify-center mt-8 gap-3.5">
-        <PurchaseBtn className="w-[29%] h-full pr-5" onClick={handlePurchaseBtn} />
+        <PurchaseBtn
+          className="w-[29%] h-full pr-5"
+          onClick={handlePurchaseBtn}
+        />
         <CancelBtn className="w-[22.13%] h-full" onClick={handleCancelBtn} />
       </div>
 
