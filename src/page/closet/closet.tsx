@@ -43,12 +43,12 @@ const outerItems = [
 ];
 
 const bottomItems = [
-  { id: 1, name: "bottom1", Component: Bottom1 },
-  { id: 2, name: "bottom2", Component: Bottom2 },
-  { id: 3, name: "bottom3", Component: Bottom3 },
-  { id: 4, name: "bottom4", Component: Bottom4 },
-  { id: 5, name: "bottom5", Component: Bottom5 },
-  { id: 6, name: "bottom6", Component: Bottom6 },
+  { id: 7, name: "bottom1", Component: Bottom1 },
+  { id: 8, name: "bottom2", Component: Bottom2 },
+  { id: 9, name: "bottom3", Component: Bottom3 },
+  { id: 10, name: "bottom4", Component: Bottom4 },
+  { id: 11, name: "bottom5", Component: Bottom5 },
+  { id: 12, name: "bottom6", Component: Bottom6 },
 ];
 
 const bottomIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
