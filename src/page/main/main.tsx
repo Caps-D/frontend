@@ -88,7 +88,8 @@ function Main () {
       const lv_progress = mainData.level % 100 + 5;
 
 
-      
+      const cleanResponse = mainData.character.top?.replace(/\[|\]/g, "");
+  
   return (
     <div className="flex flex-col items-center justify-start w-full h-full">
        <DefaultBody hasHeader={0}>
@@ -175,7 +176,7 @@ function Main () {
     {/* 옷 이미지 (위에 덮어씌움) */}
     {mainData.character.top && (
       <img
-        src={`/src/assets/${mainData.character.top}.svg`}
+        src={`/src/assets/${cleanResponse}.svg`}
         className="absolute top-0 w-full z-1 h-full object-contain pointer-events-none"
         alt="상의"
       />
