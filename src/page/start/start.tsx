@@ -23,7 +23,7 @@ const Start = () => {
   // 운동 종류에 따라 서버 주소를 반환
   const getWebSocketUrl = () => {
     if (state.exerciseType === '스쿼트') {
-      return 'wss://h4capston.site/squat/wss';
+      return 'wss://h4capston.site/squat/ws';
     } else if (state.exerciseType === '팔굽혀펴기') {
       return 'wss://h4capston.site/pushup/ws';
     } else if (state.exerciseType === '플랭크') {
