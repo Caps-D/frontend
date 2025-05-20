@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 
 const apiUrl = 'https://h4capston.site/api';
 
-export const PostWear = async (outerId: number, bottomId: number): Promise<void> => {
+export const PostWear = async (outerid: number, bottomid: number): Promise<void> => {
   axios.defaults.withCredentials = true;
 
   try {
@@ -10,8 +10,8 @@ export const PostWear = async (outerId: number, bottomId: number): Promise<void>
     const response: AxiosResponse<any> = await axios.post(
       `${apiUrl}/wear`,
       { 
-        outerId, // 상의 아이템 ID (없으면 0)
-        bottomId // 하의 아이템 ID (없으면 0)
+        outerid, // 상의 아이템 ID (없으면 0)
+        bottomid // 하의 아이템 ID (없으면 0)
       },
       { withCredentials: true }
     );
