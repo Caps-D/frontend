@@ -7,6 +7,12 @@ import Outer3 from '../../assets/top3.svg?react'
 import Outer4 from '../../assets/top4.svg?react'
 import Outer5 from '../../assets/top5.svg?react'
 import Outer6 from '../../assets/top6.svg?react'
+import Ticon1 from '../../assets/Outer1.svg?react'
+import Ticon2 from '../../assets/Outer2.svg?react'
+import Ticon3 from '../../assets/Outer3.svg?react'
+import Ticon4 from '../../assets/Outer4.svg?react'
+import Ticon5 from '../../assets/Outer5.svg?react'
+import Ticon6 from '../../assets/Outer6.svg?react'
 import Bottom1 from '../../assets/pants1.svg?react'
 import Bottom2 from '../../assets/pants2.svg?react'
 import Bottom3 from '../../assets/pants3.svg?react'
@@ -64,6 +70,16 @@ const bottomIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   bottom4: Bicon4,
   bottom5: Bicon5,
   bottom6: Bicon6,
+}
+
+const topIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
+  outer1: Ticon1,
+  outer2: Ticon2,
+  outer3: Ticon3,
+  outer4: Ticon4,
+  outer5: Ticon5,
+  outer6: Ticon6,
+ 
 }
 
 export default function Closet() {
@@ -213,6 +229,7 @@ const handleDressupBtn = async () => {
 
   console.log('현재 선택된 하의:', showClothesBottom);
 
+  
   return (
     <div className="flex flex-col w-full h-full items-center justify-start">
       <Header>
@@ -248,27 +265,49 @@ const handleDressupBtn = async () => {
       {/* 옷장 */}
       <div className="flex flex-col closet w-full h-[31%] mt-auto overflow-y-auto">
         <div className="flex flex-row w-full h-[40%] justify-center gap-8 mt-6">
-          {outerItems.slice(0, 3).map(({ name, Component }) => (
+          {clothesData
+            .filter(item => item.type === 'outer')
+            .slice(0, 3)
+            .map(({ name }) => {
+              const IconComponent = topIcons[name];
+              if (!IconComponent) {
+                console.warn(`하의 아이콘 없음: ${name}`);
+                return <div key={name}>아이콘 없음</div>;
+              }
+
+              return (
             <button
               key={name}
               className={`closet-inner w-[24.53%] h-full ${showClothesTop === name ? 'active' : ''}`}
               onClick={() => handleClothesTopBtn(name)}
             >
-              <Component className="w-full h-[220%] mt-[-90px] pointer-events-none" />
+              <IconComponent className="w-[100%] h-[80%] pointer-events-none" />
             </button>
-          ))}
+              );
+          })}
         </div>
 
         <div className="flex flex-row w-full h-[40%] justify-center gap-8 mt-3 mb-3">
-          {outerItems.slice(3, 6).map(({ name, Component }) => (
+         {clothesData
+            .filter(item => item.type === 'outer')
+            .slice(3, 6)
+            .map(({ name }) => {
+              const IconComponent = topIcons[name];
+              if (!IconComponent) {
+                console.warn(`상상의 아이콘 없음: ${name}`);
+                return <div key={name}>아이콘 없음</div>;
+              }
+
+              return (
             <button
               key={name}
-              className={`closet-inner w-[24.53%] h-full ${showClothesTop === name ? 'active' : ''}`}
+              className={`closet-inner w-[24.53%] h-[full] ${showClothesTop === name ? 'active' : ''}`}
               onClick={() => handleClothesTopBtn(name)}
             >
-              <Component className="w-full h-[220%] mt-[-90px] pointer-events-none" />
+              <IconComponent className="w-[100%] h-[80%] pointer-events-none" />
             </button>
-          ))}
+              );
+          })}
         </div>
 
         <div className="flex flex-row w-full h-[40%] justify-center gap-8">
