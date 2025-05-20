@@ -6,7 +6,7 @@ export const PostResult = async (questType:string, exerciseType:string,completed
   axios.defaults.withCredentials = true;
   try {
     const response: AxiosResponse<any> = await axios.post(
-      `${apiUrl}/submit_quest`,
+      `${apiUrl}/submit_exercise`,
       {
         questType:questType,
         exerciseType:exerciseType,
