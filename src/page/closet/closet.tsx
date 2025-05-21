@@ -1,5 +1,4 @@
 import Header from '../../components/header'
-import Woman1 from '../../assets/Woman1.svg?react'
 import DressBtn from '../../assets/DressBtn.svg?react'
 import CancelBtn from '../../assets/CancelBtn.svg?react'
 import Outer1 from '../../assets/top1.svg?react'
@@ -24,6 +23,7 @@ import Bicon6 from '../../assets/Bottom6.svg?react'
 import { useState, useEffect } from 'react'
 import { GetCloset } from '../../api/closet/getCloset'
 import { PostWear } from '../../api/closet/postWear'
+import { GetUserInfo } from '../../api/closet/getUserInfo'
 import './closet.css'
 
 type ClosetItem = {
@@ -32,6 +32,12 @@ type ClosetItem = {
   type: 'outer' | 'bottom'
   equipped: boolean
 }
+
+  type userData = {
+      gender:string|null;
+      state:number|null;
+  }
+
 
 const outerItems = [
   { id: 1, name: "outer1", Component: Outer1 },
@@ -61,11 +67,32 @@ const bottomIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
 }
 
 export default function Closet() {
+  const [ userData, setUserData] = useState<userData>({
+      gender:'female',
+      state:1,
+  });
   const [showClothesTop, setShowClothesTop] = useState<string | null>(null);
   const [showClothesBottom, setShowClothesBottom] = useState<string | null>(null);
   const [isWearing, setIsWearing] = useState(false);
   const [clothesData, setClothesData] = useState<ClosetItem[]>([]);
   const [loading, setLoading] = useState(true);
+
+ useEffect(() => {
+        const getChatRoomData = async () => {
+            console.log('실행')
+            try {
+                const userData = await GetUserInfo();
+                console.log(userData.data);
+                setUserData(userData.data || []);
+            }
+
+            catch (error) {
+                console.log("유저 정보를 불러오지 못했습니다.", error);   
+            }
+        };
+        getChatRoomData();
+    },[]);
+
 
  useEffect(() => {
   const fetchClosetData = async () => {
@@ -196,7 +223,11 @@ const handleDressupBtn = async () => {
       {/* 캐릭터 영역 */}
       <div className="flex w-full h-[40%] mt-29 justify-center items-center">
         <div className="relative flex w-[48%] h-full mt-[10px] items-center justify-center">
-          <Woman1 className="w-full h-full" />
+          <img
+            src={`/images/${userData.gender} 기본${userData.state}.svg`}
+            className="absolute top-0 left-0 w-full h-full object-contain"
+            alt="캐릭터"
+           />
           {outerItems.map(({ name, Component }) =>
             showClothesTop === name ? (
               <Component key={name} className="absolute top-0 w-full z-1 h-full object-contain" />
