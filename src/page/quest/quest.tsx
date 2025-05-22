@@ -158,19 +158,19 @@ export default function Quest() {
                       </p>
                       <div className="flex flex-row items-center">
                         <div className="flex flex-col items-center">
-                          <p className="font-['NeoDunggeunmo'] text-xl mt-3.5 mb-3.5">운동</p>
-                          <Icon className="w-11 h-11" />
+                          <p className="font-['NeoDunggeunmo'] text-xl mt-3 mb-3">운동</p>
+                          <Icon className="w-10 h-11" />
                         </div>
                         <p className="w-[1.5px] h-24 mt-6 ml-5 mr-4 bg-[#D9D9D9]" />
                         <div className="flex flex-col items-center">
                           <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-5">횟수</p>
-                          <p className="font-['NeoDunggeunmo'] w-20 h-8 bg-[#D9D9D9] rounded-[5px] flex items-center justify-center text-xl">
+                          <p className="font-['NeoDunggeunmo'] w-16 h-8 bg-[#D9D9D9] rounded-[5px] flex items-center justify-center text-xl">
                             {`${quest.count} x ${quest.sets}`}
                           </p>
                         </div>
                         <p className="w-[1.5px] h-24 mt-6 ml-4 mr-5 bg-[#D9D9D9]" />
                         <div className="flex flex-col items-center">
-                          <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-5">완료 여부</p>
+                          <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-5">완료</p>
                           <p className="font-['NeoDunggeunmo'] text-xl">
                             {quest.completed ? "o" : "x"}
                           </p>
@@ -216,13 +216,13 @@ export default function Quest() {
                         <p className="w-[1.5px] h-24 mt-6 ml-5 mr-4 bg-[#D9D9D9]" />
                         <div className="flex flex-col items-center">
                           <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-5">횟수</p>
-                          <p className="font-['NeoDunggeunmo'] w-20 h-8 bg-[#D9D9D9] rounded-[5px] flex items-center justify-center text-xl">
+                          <p className="font-['NeoDunggeunmo'] w-14 h-8 bg-[#D9D9D9] rounded-[5px] flex items-center justify-center text-xl">
                             {challenge.count}
                           </p>
                         </div>
                         <p className="w-[1.5px] h-24 mt-6 ml-4 mr-5 bg-[#D9D9D9]" />
                         <div className="flex flex-col items-center">
-                          <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-5">완료 여부</p>
+                          <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-5">완료</p>
                           <p className="font-['NeoDunggeunmo'] text-xl">
                             {challenge.completed ? "o" : "x"}
                           </p>
@@ -232,8 +232,8 @@ export default function Quest() {
                           <p className="font-['NeoDunggeunmo'] text-xl mt-2 mb-5">보상</p>
                           <div className="flex flex-col">
                             <div className="flex flex-row">
-                              <Coin className="w-5 h-5 mr-2" />
-                              <p className="font-['NeoDunggeunmo'] text-xl">{challenge.reward}</p>
+                              <Coin className="w-5 h-5 mr-2 mt-1.5" />
+                              <p className="font-['NeoDunggeunmo'] text-xl mt-1">{challenge.reward}</p>
                             </div>
                           </div>
                         </div>
