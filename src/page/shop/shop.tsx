@@ -1,6 +1,5 @@
 import Header from '../../components/header'
 import Gold from '../../assets/Gold.svg?react'
-import Woman1 from '../../assets/Woman1.svg?react'
 import PurchaseBtn from '../../assets/PurchaseBtn.svg?react'
 import CancelBtn from '../../assets/CancelBtn.svg?react'
 import Bottom1 from '../../assets/pants1.svg?react'
@@ -20,8 +19,11 @@ import Bicon6 from '../../assets/Bottom6.svg?react'
 import { useEffect, useState } from 'react'
 import { GetShop } from '../../api/shop/getShop'
 import { GetShopCoin } from '../../api/shop/getShopCoin'
-import { PostBuy } from '../../api/shop/postBuy' // 구매 API 임포트
+import { PostBuy } from '../../api/shop/postBuy' 
+import { GetUserInfo } from '../../api/shop/getUserInfo' 
 import './shop.css'
+
+
 
 const bottomComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   bottom1: Bottom1,
@@ -48,11 +50,22 @@ type BottomItem = {
   price: number
 }
 
+type userData = {
+      gender:string|null;
+      state:number|null;
+  }
+
+
 export default function Shop() {
   const [bottoms, setBottoms] = useState<BottomItem[]>([])
   const [selectedBottom, setSelectedBottom] = useState<string | null>(null)
   const [userCoins, setUserCoins] = useState<number>(0)
   const [loading, setLoading] = useState(false)
+
+    const [ userData, setUserData] = useState<userData>({
+        gender:'female',
+        state:1,
+    });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +81,23 @@ export default function Shop() {
 
     fetchData()
   }, [])
+
+  useEffect(() => {
+          const getChatRoomData = async () => {
+              console.log('실행')
+              try {
+                  const userData = await GetUserInfo();
+                  console.log(userData.data);
+                  setUserData(userData.data || []);
+              }
+  
+              catch (error) {
+                  console.log("유저 정보를 불러오지 못했습니다.", error);   
+              }
+          };
+          getChatRoomData();
+      },[]);
+
 
   const handlePurchaseBtn = async () => {
     if (!selectedBottom) {
@@ -120,7 +150,11 @@ export default function Shop() {
       </div>
 
       <div className="relative w-[48.53%] h-[36.2%]">
-        <Woman1 className="w-full h-full" />
+      <img
+            src={`/images/${userData.gender} 기본${userData.state}.svg`}
+            className="absolute top-0 left-0 w-full h-full object-contain"
+            alt="캐릭터"
+        />
         {selectedBottom && bottomComponents[selectedBottom] && (() => {
           const SelectedComp = bottomComponents[selectedBottom]
           return <SelectedComp className="absolute top-0 left-1 w-full z-1 h-full object-contain pointer-events-none" />
@@ -177,3 +211,4 @@ export default function Shop() {
     </div>
   )
 }
+
